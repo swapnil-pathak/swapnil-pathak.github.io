@@ -1,0 +1,40 @@
+@font-face {
+  font-family:'Iosevka Regular';
+  src:url("/fonts/iosevka-regular.woff2")
+}
+
+@font-face {
+  font-family:'Iosevka Medium';
+  src:url("/fonts/iosevka-medium.woff2")
+}
+
+a {
+  color:#337ab7;
+  transition:0.2s linear
+}
+
+a.page-link {
+  color:#337ab7
+}
+
+ul {
+  padding-left:0
+}
+
+.course h2 {
+  margin-top:2rem
+}
+
+code,kbd,pre,samp {
+  font-family:'Iosevka Medium', 'Menlo', 'Monaco', monospace !important;
+  white-space:pre
+}
+
+pre {
+  border-radius:5px;
+  padding:1em
+}
+
+.alert>p:last-child {
+  margin-bottom:0
+}
