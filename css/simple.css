@@ -44,10 +44,6 @@ body {
     width: 100%;
 }
 
-header {
-    border-bottom: 1px solid #999;
-}
-
 .gen-content p
 {font-size: 1em;}
 
