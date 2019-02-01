@@ -11,8 +11,8 @@
 .img-responsive {
   display: block;
   max-width: 50%;
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: auto;
 }
 
 
