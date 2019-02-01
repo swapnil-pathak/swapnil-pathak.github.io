@@ -19,20 +19,13 @@
 		  margin: auto;
 		  padding-top: 80px;
 		}
-		.center_img {
-  		display: block;
-  		margin-left: auto;
-  		margin-right: auto;
-  		width: 50%;
-			height: 50%
-		}
 	</style>
 
 
 	<head>
 		<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
 
-		<title>Security Blog | HTB | Swapnil Pathak</title>
+		<title>HTB Invite | Swapnil Pathak</title>
 	</head>
 
 	<!-- Start body -->
@@ -70,24 +63,75 @@
 		<!-- Main content start -->
 		<main class="page-content">
 
-			<div class="blog-post-thumb">
-				<a href="/security_blog/htb.html"><img width=100% height=100% src="/assets/HTB_images/htb.PNG" alt="HTB" class=".center_img"/></a>
-			</div><!-- .blog-post-thumb -->
+      <article class="post">
+          <header>
+              <h1>HTB Invite code</h1>
+              <span class="text-muted">Getting the invite code to login and start hacking!</span><br>
+              <span class="text-muted">
 
-			<article class="post mb-2">
-				<header>
-			  	<h4>HackTheBox Invite</h4>
-			  </header>
+                  Posted <time datetime=2019-02-01&#32;EDT>Fri Feb 01 2019</time>
 
-				<section class="summary py-2">
-			  	<p>Unlinke many other CTF-like or Real-world scenario based services, to start your arduous journey with HackTheBox, you will need to obtain an invite code to prove your worth. To get the ball rolling, here is some information on that.</p>
-			  	<p class="d-flex"><span class="ml-auto"><a href=/security_blog/htb_invite.html><i>Read More &raquo;</i></a></span></p>
-				</section>
-			</article>
+              </span>
+              <br>
 
-			<hr>
+          </header>
+          <hr>
+          <section class="body">
+            <p>Unlinke many other CTF-like or Real-world scenario based services, to start your arduous journey with HackTheBox, you will need to obtain an invite code to prove your worth. To get the ball rolling, here is some information on that.</p>
 
+      <h2 id="invite">Try harder!</h2>
 
+      <p>Before following this walkthrough, I highly recommend trying to get the invite yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)</p>
+      <p>In order to login, you need to find the <a href="https://www.hackthebox.eu/invite">invite page</a> shown below.</p>
+
+      <figure class="post">
+          <img src="/assets/HTB_images/Invite/invite_page.PNG" class="img-responsive img-rounded">
+
+      </figure>
+      <p>Once you find it, go to the Developer console (Ctrl + Shift + I), if you look closely you will see a JavaScript link to the <i>inviteapi</i>.</p>
+
+      <figure class="post">
+          <img src="/assets/HTB_images/Invite/invite_api.PNG" class="img-responsive img-rounded">
+
+      </figure>
+
+      <p>Try pasting the specified <a href="https://www.hackthebox.eu/js/inviteapi.min.js">URL</a> in the search bar and let's see what we find out.</p>
+
+      <figure class="post">
+          <img src="/assets/HTB_images/Invite/make_invite_code.PNG" class="img-responsive img-rounded">
+
+      </figure>
+      <p>Guess what! There is an API that actually generates an invite code for you. Pretty cool isn't it? Let's use the console to fire up this API (<code>makeInviteCode()</code>). Well the <a href="https://www.restapitutorial.com/httpstatuscodes.html">return code</a> is 200 and we receive a string with <a href="https://en.wikipedia.org/wiki/Base64">base64 encoding</a>.</p>
+
+      <figure class="post">
+          <img src="/assets/HTB_images/Invite/base64_invite.PNG" class="img-responsive img-rounded">
+
+      </figure>
+
+      <p>Let's try to decode (you can use any online tool available, I prefer commandline) that and see what we can uncover.</p>
+
+      <figure class="post">
+          <img src="/assets/HTB_images/Invite/base64_decode.PNG" class="img-responsive img-rounded">
+
+      </figure>
+      <p>Great! So it gave us an extended URL to send a <a href="https://en.wikipedia.org/wiki/POST_(HTTP)">POST request</a> to. Let's do that. I will use <a href="https://curl.haxx.se/docs/httpscripting.html">CURL</a> because like I said I like commandline.
+      <code>curl -XPOST https://www.hackthebox.eu/api/invite/generate</code> should do the trick.</p>
+
+      <figure class="post">
+          <img src="/assets/HTB_images/Invite/base64_invitecode.PNG" class="img-responsive img-rounded">
+
+      </figure>
+
+      <p>Success! We got the invite code but as you can see its encoded (<i>PS: I have hidden some of it just in case.</i>). Let's try using Base64 decoding again.
+      Let's do <code>echo "THE CODE HERE" | base64 -d</code> adn we get ...</p>
+
+      <figure class="post">
+          <img src="/assets/HTB_images/Invite/invitecode.PNG" class="img-responsive img-rounded">
+
+      </figure>
+
+      <p>Voila! We have the Invite code and we can use this to login to our first destination HackTheBox.</p>
+      <p>Happy Hacking! Cheers!</p>
 		</main>
 		<!-- End main content -->
 
