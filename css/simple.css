@@ -10,7 +10,7 @@
 
 .img-responsive {
   display: block;
-  width: 50%;
+  width: auto;
   height: 100%;
 
 }
