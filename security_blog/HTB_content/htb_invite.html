@@ -103,7 +103,7 @@
 
       </figure>
 			<br>
-      <p>Guess what! There is an API that actually generates an invite code for you. Pretty cool isn't it? Let's use the console to fire up this API (<code>makeInviteCode()</code>). Well the <a href="https://www.restapitutorial.com/httpstatuscodes.html">return code</a> is 200 and we receive a string with <a href="https://en.wikipedia.org/wiki/Base64">base64 encoding</a>.</p>
+      <p>Guess what! There is an API that actually generates an invite code for you. Pretty cool isn't it? Let's use the console to fire up this API (<code_content>makeInviteCode()</code_content>). Well the <a href="https://www.restapitutorial.com/httpstatuscodes.html">return code</a> is 200 and we receive a string with <a href="https://en.wikipedia.org/wiki/Base64">base64 encoding</a>.</p>
 
       <figure class="post">
           <img src="/assets/HTB_images/Invite/base64_invite.PNG" class="img-responsive img-rounded">
@@ -117,7 +117,7 @@
 
       </figure>
       <p>Great! So it gave us an extended URL to send a <a href="https://en.wikipedia.org/wiki/POST_(HTTP)">POST request</a> to. Let's do that. I will use <a href="https://curl.haxx.se/docs/httpscripting.html">CURL</a> because like I said I like commandline.
-      <code>curl -XPOST https://www.hackthebox.eu/api/invite/generate</code> should do the trick.</p><br>
+      <code_content>curl -XPOST https://www.hackthebox.eu/api/invite/generate</code_content> should do the trick.</p><br>
 
       <figure class="post">
           <img src="/assets/HTB_images/Invite/base64_invitecode.PNG" class="img-responsive img-rounded">
@@ -125,7 +125,7 @@
       </figure>
 			<br>
       <p>Success! We got the invite code but as you can see its encoded (<i>PS: I have hidden some of it just in case.</i>). Let's try using Base64 decoding again.
-      Let's do <code>echo "THE CODE HERE" | base64 -d</code> and we get ...</p>
+      Let's do <code_content>echo "THE CODE HERE" | base64 -d</code_content> and we get ...</p>
 
       <figure class="post">
           <img src="/assets/HTB_images/Invite/invitecode.PNG" class="img-responsive img-rounded">
