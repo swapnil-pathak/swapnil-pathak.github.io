@@ -35,7 +35,8 @@ ul {
 
 code,kbd,pre,samp {
   font-family:'Iosevka Medium', 'Menlo', 'Monaco', monospace !important;
-  white-space:pre
+  white-space:pre;
+  color:#c7254e;background-color:#f9f2f4;border-radius:4px;
 }
 
 pre {
