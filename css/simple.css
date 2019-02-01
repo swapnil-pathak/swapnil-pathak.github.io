@@ -8,6 +8,14 @@
   src:url("/fonts/iosevka-medium.woff2")
 }
 
+.img-responsive {
+  display: block;
+  width: 50%;
+  height: 100%;
+
+}
+
+
 a {
   color:#337ab7;
   transition:0.2s linear
