@@ -10,10 +10,9 @@
 
 .img-responsive {
   display: block;
+  max-width: 50%;
   width: auto;
   height: 100%;
-  margin-left: -50%;
-  margin-right: -50%;
 }
 
 
