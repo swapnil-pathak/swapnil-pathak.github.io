@@ -47,13 +47,6 @@ pre {
   margin-bottom:0
 }
 
-footer {
- position: absolute;
- bottom: 0;
- width: 100%;
- height: 2.5rem;
-}
-
 
 .author__avatar {
   display:table-cell;
