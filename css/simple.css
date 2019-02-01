@@ -69,3 +69,14 @@ footer {
     border:1px solid rgba(0,0,0,0.1)
   }
 }
+
+.blog-post-thumb {
+  margin-bottom:37px;
+  font-size:0;
+  line-height:0;
+  text-align:center
+}
+.blog-post-thumb a,.blog-post-thumb img {
+  display:inline-block;
+  max-width:100%
+}
