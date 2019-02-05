@@ -9,110 +9,114 @@
 	  crossorigin="anonymous">
 	<link rel="stylesheet" href="/css/simple.css">
 
-	<style type="text/css">
-		ol ol { list-style-type: lower-alpha; }
-		pre { white-space: pre-line; }
-		li { margin-bottom: 10px; }
-		h4 { margin-top: 30px; margin-bottom: -10px; }
-		.page-content{
-  		max-width: 50%;
-		  margin: auto;
-		  padding-top: 80px;
-		}
-	</style>
-
 	<head>
 		<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
 
-		<title>Security Blog | Swapnil Pathak</title>
+		<title>About | Swapnil Pathak</title>
 	</head>
 
+	<!-- Start body -->
 	<body>
-		<div class="container-responsive fixed-top border-bottom" style="background-color: #fff;"><div class="container">
-			<nav class="navbar navbar-expand-lg navbar-light px-0">
-					<div class="col-sm-3 text-center px-0">
-						<a class="navbar-brand font-weight-bold" href="/about/about.html">About</a>
-					</div>
+    <div class="container-responsive fixed-top border-bottom" style="background-color: #fff;">
+			<div class="container">
+      	<nav class="navbar navbar-expand-lg navbar-light px-0">
+          <div class="col-sm-3 text-center px-0">
+            <a class="navbar-brand font-weight-bold" href="/about/about.html">About</a>
+          </div>
 
-					<div class="col-sm-8 ml-auto px-0">
-						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle Navigation">
-							<span class="navbar-toggler-icon"></span>
-						</button>
+          <div class="col-sm-8 ml-auto px-0">
 
-						<div id="navbar-content" class="collapse navbar-collapse">
-							<ul class="navbar-nav ml-auto">
-								<li class="nav-item active">
-									<a class="nav-link text-uppercase font-weight-bold" href="/" title=Home>Home</a>
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="navbar-toggler dropdown-toggle" href="/" id="navbardrop" data-toggle="dropdown">Menu</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/index.html">Home</a>
+                  <a class="dropdown-item" href="/about/about.html">About</a>
+                  <a class="dropdown-item" href="/security_blog/security_blog.html">Security Blog</a>
+                </div>
+              </li>
+            </ul>
+
+          	<div id="navbar-content" class="collapse navbar-collapse">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                  <a class="nav-link text-uppercase font-weight-bold" href="/" title=Home>Home</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link text-uppercase font-weight-bold" href="/security_blog/security_blog.html" title="Security Blog">Security Blog</a>
+                </li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="/">Categories <span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										<li><a href="/security_blog/challenges">HTB Challenges</a></li>
+										<li><a href="/security_blog/machines">HTB Machines</a></li>
+									</ul>
 								</li>
-								<li class="nav-item active">
-									<a class="nav-link text-uppercase font-weight-bold" href="/security_blog/security_blog.html" title="Security Blog">Security Blog</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</nav>
-			</div>
-		</div>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+		<!-- End header -->
 
-		<!-- Main content here -->
-		<main class="page-content">
+		<!-- Main content start -->
+    <div class="container mt-5 pt-5">
+      <main class="col-sm-10 mx-sm-auto">
+
 
 			<h1>Posts</h1>
 			<hr>
-			<article class="post mb-2">
-				<header>
-			  	<h4>HackTheBox Writeups</h4>
-			  </header>
+			<div class="newpost mb-4">
+		  	<h4>HackTheBox Writeups</h4>
 
 				<section class="summary py-2">
 			  	<p>If you are a novice hacker looking to start somewhere and cannot find the right place, here is some information on challenges presented on <a href="https://www.hackthebox.eu/">hackthebox.eu</a>, how to get started and begin hacking!</p>
 			  	<p class="d-flex"><span class="ml-auto"><a href=/security_blog/htb.html><i>Read More &raquo;</i></a></span></p>
 				</section>
-			</article>
+			</div>
 			<hr>
-			<article class="post mb-2">
-				<header>
-			  	<h4>Security Essentials</h4>
-			  </header>
+			<div class="newpost mb-4">
+			  <h4>Security Essentials</h4>
 
 				<section class="summary py-2">
 			  	<p>Here is some information on various technologies that security professionals use daily. If you were trying to do something on your computer and you got stuck, you can find some interesting tricks to solve those problems in this section</p>
 			  	<p class="d-flex"><span class="ml-auto"><a href=/security_blog/sec_essentials.html><i>Read More &raquo;</i></a></span></p>
 				</section>
-			</article>
+			</div>
 			<hr>
-			
+
 		</main>
 		<!-- End main content -->
+	</div>
+	<hr>
 
-			<hr>
-
-			<p class="text-center text-muted">
-				&copy; SSP
-			</p>
+		<p class="text-center text-muted">
+			&copy; SSP
+		</p>
 		<!-- End footer -->
 
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-			crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-			integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-			crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-			integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-			crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
-			integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k="
-			crossorigin="anonymous"></script>
-		<script type="application/javascript">
-			var doNotTrack = false;
-			if (!doNotTrack) {
-				window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-				ga('create', 'UA-6650910-4', 'auto');
-				ga('send', 'pageview');
-			}
-		</script>
-		<script async src='https://www.google-analytics.com/analytics.js'></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+		integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k="
+		crossorigin="anonymous"></script>
+	<script type="application/javascript">
+		var doNotTrack = false;
+		if (!doNotTrack) {
+			window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+			ga('create', 'UA-6650910-4', 'auto');
+			ga('send', 'pageview');
+		}
+	</script>
+	<script async src='https://www.google-analytics.com/analytics.js'></script>
 
 	</body>
 </html>
