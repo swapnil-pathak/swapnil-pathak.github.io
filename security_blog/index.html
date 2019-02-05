@@ -12,7 +12,7 @@
 	<head>
 		<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
 
-		<title>HTB | Machines | Swapnil</title>
+		<title>Security Blog | Swapnil Pathak</title>
 	</head>
 
 	<!-- Start body -->
@@ -21,7 +21,7 @@
 			<div class="container">
       	<nav class="navbar navbar-expand-lg navbar-light px-0">
           <div class="col-sm-3 text-center px-0">
-            <a class="navbar-brand font-weight-bold" href="/about/about.html">About</a>
+            <a class="navbar-brand font-weight-bold" href="/about/">About</a>
           </div>
 
           <div class="col-sm-8 ml-auto px-0">
@@ -30,9 +30,9 @@
               <li class="nav-item dropdown">
                 <a class="navbar-toggler dropdown-toggle" href="/" id="navbardrop" data-toggle="dropdown">Menu</a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="/index.html">Home</a>
-                  <a class="dropdown-item" href="/about/about.html">About</a>
-                  <a class="dropdown-item" href="/security_blog/security_blog.html">Security Blog</a>
+                  <a class="dropdown-item" href="/">Home</a>
+                  <a class="dropdown-item" href="/about/">About</a>
+                  <a class="dropdown-item" href="/security_blog/">Security Blog</a>
                 </div>
               </li>
             </ul>
@@ -43,8 +43,15 @@
                   <a class="nav-link text-uppercase font-weight-bold" href="/" title=Home>Home</a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link text-uppercase font-weight-bold" href="/security_blog/security_blog.html" title="Security Blog">Security Blog</a>
+                  <a class="nav-link text-uppercase font-weight-bold" href="/security_blog/" title="Security Blog">Security Blog</a>
                 </li>
+								<li class="nav-item active">
+									<a class="nav-link text-uppercase font-weight-bold dropdown-toggle" data-toggle="dropdown" href="/">Categories <span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										<li><a href="/security_blog/challenges/">HTB Challenges</a></li>
+										<li><a href="/security_blog/machines/">HTB Machines</a></li>
+									</ul>
+								</li>
               </ul>
             </div>
           </div>
@@ -58,14 +65,35 @@
       <main class="col-sm-10 mx-sm-auto">
 
 
-      </main>
-		<!-- End main content -->
-  </div>
-		<hr>
+			<h1>Posts</h1>
+			<hr>
+			<div class="newpost mb-4">
+		  	<h4>HackTheBox Writeups</h4>
 
-			<p class="text-center text-muted">
-				&copy; SSP
-			</p>
+				<section class="summary py-2">
+			  	<p>If you are a novice hacker looking to start somewhere and cannot find the right place, here is some information on challenges presented on <a href="https://www.hackthebox.eu/">hackthebox.eu</a>, how to get started and begin hacking!</p>
+			  	<p class="d-flex"><span class="ml-auto"><a href=/security_blog/htb><i>Read More &raquo;</i></a></span></p>
+				</section>
+			</div>
+			<hr>
+			<div class="newpost mb-4">
+			  <h4>Security Essentials</h4>
+
+				<section class="summary py-2">
+			  	<p>Here is some information on various technologies that security professionals use daily. If you were trying to do something on your computer and you got stuck, you can find some interesting tricks to solve those problems in this section</p>
+			  	<p class="d-flex"><span class="ml-auto"><a href=/security_blog/security_essentials><i>Read More &raquo;</i></a></span></p>
+				</section>
+			</div>
+			<hr>
+
+		</main>
+		<!-- End main content -->
+	</div>
+	<hr>
+
+		<p class="text-center text-muted">
+			&copy; SSP
+		</p>
 		<!-- End footer -->
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
