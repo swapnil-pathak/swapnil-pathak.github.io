@@ -80,7 +80,7 @@
           	<img src="/assets/HTB_images/Challenges-Misc/banner.PNG" class="img-responsive img-rounded">
 
       			</figure>
-            
+
       			<h2 id="oldisgold">Spies everywhere!</h2>
 
       			<p>Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)</p>
@@ -97,6 +97,28 @@ htb@noone:~/misc/old_is_gold$</span> ls
 '0ld is g0ld.pdf'  0ld_is_g0ld.zip</code>
               </pre>
             </div>
+
+						htb@noone:~/misc/old_is_gold$ pdfcrack -w /usr/share/wordlists/rockyou.txt -f "0ld is g0ld.pdf"
+
+PDF version 1.6
+Security Handler: Standard
+V: 2
+R: 3
+P: -1060
+Length: 128
+Encrypted Metadata: True
+FileID: 5c8f37d2a45eb64e9dbbf71ca3e86861
+U: 9cba5cfb1c536f1384bba7458aae3f8100000000000000000000000000000000
+O: 702cc7ced92b595274b7918dcb6dc74bedef6ef851b4b4b5b8c88732ba4dac0c
+Average Speed: 48468.9 w/s. Current Word: 'dichan'
+Average Speed: 46361.3 w/s. Current Word: 'crazygal150'
+Average Speed: 47579.1 w/s. Current Word: 'vulu4e'
+Average Speed: 46935.2 w/s. Current Word: 'shopping3034906'
+Average Speed: 48184.5 w/s. Current Word: 'pdc39289312b'
+Average Speed: 48769.8 w/s. Current Word: 'matt0210'
+Average Speed: 48678.5 w/s. Current Word: 'katieb007'
+found user-password: 'jumanji69'
+
 			      <p>Voila! We have the FLAG and we can use this to gain out points on HackTheBox.</p>
 			      <p>Happy Hacking! Cheers!</p>
 					</section>
