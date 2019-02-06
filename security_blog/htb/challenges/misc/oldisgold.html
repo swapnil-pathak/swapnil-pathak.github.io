@@ -97,9 +97,14 @@ htb@noone:~/misc/old_is_gold$</span> ls
 '0ld is g0ld.pdf'  0ld_is_g0ld.zip</code>
               </pre>
             </div>
-
-						htb@noone:~/misc/old_is_gold$ pdfcrack -w /usr/share/wordlists/rockyou.txt -f "0ld is g0ld.pdf"
-
+						<p>Well, so we have a pdf file. Let's try to open it.</p>
+						<p>Turns out its password protected. We will have to see if we can crack its password to see what's in there. I am going to use <a href="https://www.cyberciti.biz/tips/linux-howto-crack-recover-pdf-file-password.html">pdfcrack</a> to do that.</p>
+						<p>You might want to lookup the options to use it if you haven't already. Use <code>pdfcrack -h</code> to see the options and select what suits your need the best.</p>
+						<p>I am going to do a dictionary attack, for that I am going to use <a href="https://wiki.skullsecurity.org/Passwords">rockyou.txt</a> file. You can try with other wordlists just for trying.</p>
+						<div class="highlight">
+              <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+                <code class="language-bash" data-lang="bash"><span style="color:#66d9ef">
+htb@noone:~/misc/old_is_gold$</span> pdfcrack -w /usr/share/wordlists/rockyou.txt -f "0ld is g0ld.pdf"
 PDF version 1.6
 Security Handler: Standard
 V: 2
@@ -111,15 +116,26 @@ FileID: 5c8f37d2a45eb64e9dbbf71ca3e86861
 U: 9cba5cfb1c536f1384bba7458aae3f8100000000000000000000000000000000
 O: 702cc7ced92b595274b7918dcb6dc74bedef6ef851b4b4b5b8c88732ba4dac0c
 Average Speed: 48468.9 w/s. Current Word: 'dichan'
-Average Speed: 46361.3 w/s. Current Word: 'crazygal150'
-Average Speed: 47579.1 w/s. Current Word: 'vulu4e'
-Average Speed: 46935.2 w/s. Current Word: 'shopping3034906'
-Average Speed: 48184.5 w/s. Current Word: 'pdc39289312b'
-Average Speed: 48769.8 w/s. Current Word: 'matt0210'
-Average Speed: 48678.5 w/s. Current Word: 'katieb007'
-found user-password: 'jumanji69'
+```snip```
+found user-password: 'jumanji69'<span style="color:#66d9ef"></code>
+							</pre>
+						</div>
+						<p>We will use this password to open the pdf.</p>
+						<figure class="post">
+						<img src="/assets/HTB_images/Challenges-Misc/pdfout.PNG" class="img-responsive img-rounded">
 
-			      <p>Voila! We have the FLAG and we can use this to gain out points on HackTheBox.</p>
+						</figure>
+						<p>Woah! Take a bow <a href="https://en.wikipedia.org/wiki/Samuel_Morse">Samuel Morse</a> (I didn't know it was him. A little search helped me). But we are here for the flag. What does this picture mean? If we scroll down and zoom in, we see something.</p>
+						<figure class="post">
+						<img src="/assets/HTB_images/Challenges-Misc/pdfout.PNG" class="img-responsive img-rounded">
+
+						</figure>
+						<p>Look at that! We have a morse code to crack. I will use an online translator to do this (Maybe I will create a simple tool).</p>
+						<figure class="post">
+						<img src="/assets/HTB_images/Challenges-Misc/morsetranslate.PNG" class="img-responsive img-rounded">
+
+						</figure>
+			      <p>Voila! We have the FLAG and we can use this to gain out points on HackTheBox. Don't forget to enclose the flag in <i>HTB{}</i> because that's the format.</p>
 			      <p>Happy Hacking! Cheers!</p>
 					</section>
 				</article>
