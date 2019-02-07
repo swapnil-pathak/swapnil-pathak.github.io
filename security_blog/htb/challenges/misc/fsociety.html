@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+	  integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css"
+	  crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/simple.css">
+
+	<head>
+		<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+
+		<title>0ld is g0ld | Swapnil Pathak</title>
+	</head>
+
+	<!-- Start body -->
+	<body>
+    <div class="container-responsive fixed-top border-bottom" style="background-color: #fff;">
+			<div class="container">
+      	<nav class="navbar navbar-expand-lg navbar-light px-0">
+          <div class="col-sm-3 text-center px-0">
+            <a class="navbar-brand font-weight-bold" href="/about/">About</a>
+          </div>
+
+          <div class="col-sm-8 ml-auto px-0">
+
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="navbar-toggler dropdown-toggle" href="/" id="navbardrop" data-toggle="dropdown">Menu</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/">Home</a>
+                  <a class="dropdown-item" href="/about/">About</a>
+                  <a class="dropdown-item" href="/security_blog/">Security Blog</a>
+                </div>
+              </li>
+            </ul>
+
+          	<div id="navbar-content" class="collapse navbar-collapse">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                  <a class="nav-link text-uppercase font-weight-bold" href="/" title=Home>Home</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link text-uppercase font-weight-bold" href="/security_blog/" title="Security Blog">Security Blog</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+		<!-- End header -->
+
+		<!-- Main content start -->
+    <div class="container mt-5 pt-5">
+      <main class="col-sm-10 mx-sm-auto">
+
+      	<article class="post">
+          <header>
+            <h1>0ld is g0ld</h1>
+            <span class="text-muted">Misc challenge from HTB!</span><br>
+            <span class="text-muted">
+
+            	Posted <time datetime=2019-02-05&#32;EDT>Tue Feb 05 2019</time>
+
+            </span>
+            <br>
+						<a href="/tags/challenges"><span class="badge badge-primary">challenges</span></a>
+						<a href="/tags/challenges/misc.html"><span class="badge badge-primary">misc</span></a>
+
+          </header>
+          <hr>
+          <section class="body">
+            <p>This particular challenge is a good starter to your journey as a challenge solver! Take a moment to appreciate the beauty of "old" algorithms, without them we would not be able to build cyber security so much.
+              This challenge will earn you 10 points which is not a lot but you got to start somewhere.
+            </p>
+
+            <figure class="post">
+          	<img src="/assets/HTB_images/Challenges-Misc/banner.PNG" class="img-responsive img-rounded">
+
+      			</figure>
+
+      			<h2 id="oldisgold">Spies everywhere!</h2>
+
+      			<p>Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)</p>
+      			<p>Follow this <a href="https://www.hackthebox.eu/home/challenges/Misc">link</a> and download the file under 0ld is g0ld section as shown below. You will have to login in order to do that.</p>
+
+            <div class="highlight">
+              <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+                <code class="language-bash" data-lang="bash"><span style="color:#66d9ef">
+htb@noone:~/misc/old_is_gold$</span> unzip 0ld_is_g0ld.zip
+Archive:  0ld_is_g0ld.zip
+  [0ld_is_g0ld.zip] 0ld is g0ld.pdf password: hackthebox
+inflating: 0ld is g0ld.pdf<span style="color:#66d9ef">
+htb@noone:~/misc/old_is_gold$</span> ls
+'0ld is g0ld.pdf'  0ld_is_g0ld.zip</code>
+              </pre>
+            </div>
+						<p>Well, so we have a pdf file. Let's try to open it.</p>
+						<p>Turns out its password protected. We will have to see if we can crack its password to see what's in there. I am going to use <a href="https://www.cyberciti.biz/tips/linux-howto-crack-recover-pdf-file-password.html">pdfcrack</a> to do that.</p>
+						<p>You might want to lookup the options to use it if you haven't already. Use <code>pdfcrack -h</code> to see the options and select what suits your need the best.</p>
+						<p>I am going to do a dictionary attack, for that I am going to use <a href="https://wiki.skullsecurity.org/Passwords">rockyou.txt</a> file. You can try with other wordlists just for trying.</p>
+						<div class="highlight">
+              <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+                <code class="language-bash" data-lang="bash"><span style="color:#66d9ef">
+htb@noone:~/misc/old_is_gold$</span> pdfcrack -w /usr/share/wordlists/rockyou.txt -f "0ld is g0ld.pdf"
+PDF version 1.6
+Security Handler: Standard
+V: 2
+R: 3
+P: -1060
+Length: 128
+Encrypted Metadata: True
+FileID: 5c8f37d2a45eb64e9dbbf71ca3e86861
+U: 9cba5cfb1c536f1384bba7458aae3f8100000000000000000000000000000000
+O: 702cc7ced92b595274b7918dcb6dc74bedef6ef851b4b4b5b8c88732ba4dac0c
+Average Speed: 48468.9 w/s. Current Word: 'dichan'
+```snip```
+found user-password: 'jumanji69'<span style="color:#66d9ef"></code>
+							</pre>
+						</div>
+						<p>We will use this password to open the pdf.</p>
+						<figure class="post">
+						<img src="/assets/HTB_images/Challenges-Misc/pdfout.png" class="img-responsive img-rounded">
+
+						</figure>
+						<p>Woah! Take a bow <a href="https://en.wikipedia.org/wiki/Samuel_Morse">Samuel Morse</a> (I didn't know it was him. A little search helped me). But we are here for the flag. What does this picture mean? If we scroll down and zoom in, we see something.</p>
+						<figure class="post">
+						<img src="/assets/HTB_images/Challenges-Misc/morse.png" class="img-responsive img-rounded">
+
+						</figure>
+						<p>Look at that! We have a morse code to crack. I will use an online translator to do this (Maybe I will create a simple tool).</p>
+						<figure class="post">
+						<img src="/assets/HTB_images/Challenges-Misc/morsetranslate.png" class="img-responsive img-rounded">
+
+						</figure>
+			      <p>Voila! We have the FLAG and we can use this to gain out points on HackTheBox. Don't forget to enclose the flag in <i>HTB{}</i> because that's the format.</p>
+			      <p>Happy Hacking! Cheers!</p>
+					</section>
+				</article>
+			</main>
+		</div>
+		<!-- End main content -->
+
+		<hr>
+
+		<p class="text-center text-muted">
+			&copy; SSP
+		</p>
+		<!-- End footer -->
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+		integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k="
+		crossorigin="anonymous"></script>
+	<script type="application/javascript">
+		var doNotTrack = false;
+		if (!doNotTrack) {
+		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+		ga('create', 'UA-6650910-4', 'auto');
+		ga('send', 'pageview');
+		}
+	</script>
+	<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+	</body>
+</html>
