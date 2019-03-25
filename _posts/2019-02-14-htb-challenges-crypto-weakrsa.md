@@ -1,18 +1,17 @@
 ---
 layout: single
 classes: wide
-title:  "Weak RSA"
+title:  "Walkthrough - Weak RSA"
 date: 2019-02-14
 categories:
     - "hackthebox"
 tags:
     - challenges
     - crypto
-excerpt:  "Breaking the infamous RSA algorithm. It has been the gold standard for public-key cryptography. There's a catch though, if you implement it badly, your ciphertext is no longer safe. Given a few minutes and a bit of RSA knowledge should do the trick for this challenge. Read here for more information on this."
 ---
 Breaking the infamous RSA algorithm. It has been the gold standard for public-key cryptography. There's a catch though, if you implement it badly, your ciphertext is no longer safe. Given a few minutes and a bit of RSA knowledge should do the trick for this challenge. Read here for more information on this.
 
-![alt]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/Challenges-Crypto/weakrsa/banner.PNG)
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/Challenges-Crypto/weakrsa/banner.PNG)
 
 ## Your key is Public
 
@@ -20,7 +19,7 @@ Before following this walkthrough, I highly recommend trying to get the flag you
 
 Follow this [link](https://www.hackthebox.eu/home/challenges/Crypto) and download the file under Weak RSA section. You will have to login in order to do that.
 
-```console
+```bash
 htb@noone:~/crypto/weakrsa$ unzip weak-rsa.zip
 Archive:  weak-rsa.zip
 [weak-rsa.zip] flag.enc password:
@@ -31,7 +30,7 @@ htb@noone:~/crypto/weakrsa$
 
 Well, so we have a two files. Let's try to open them.
 
-```console
+```bash
 htb@noone:~/crypto/weakrsa$ cat key.pub
 -----BEGIN PUBLIC KEY-----
 MIIBHzANBgkqhkiG9w0BAQEFAAOCAQwAMIIBBwKBgQMwO3kPsUnaNAbUlaubn7ip
@@ -52,7 +51,7 @@ We can derive from the reading that if the `p` and `q` values are smaller primes
 
 A little Google Fu got me this tool. We can leverage it to try and decrypt the `flag.enc` file contents.
 
-```console
+```bash
 htb@noone:~/crypto/weakrsa$ python RsaCtfTool/RsaCtfTool.py --publickey key.pub --uncipherfile flag.enc
 [+] Clear text : !ϲo@gX{Dn(Dx".,-)!6WQ+L~J9߬{_SDYCߚ4LU
    p/AHTB{s1mpl3*********4tt4ck}

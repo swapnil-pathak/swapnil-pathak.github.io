@@ -1,7 +1,7 @@
 ---
 layout: single
 classes: wide
-title:  "Access"
+title:  "Walkthrough - Access"
 date: 2019-03-11
 categories:
     - "hackthebox"
@@ -9,11 +9,10 @@ tags:
     - machines
     - windows
     - easy
-excerpt:  "This was my first ever machine on HTB. Took me around 3 days to figure this out (I was just starting!). This box touches basic misconfiguration in Windows based servers and is a good starter to your adventure in penetration testing with hackthebox."
 ---
 This was my first ever machine on HTB. Took me around 3 days to figure this out (I was just starting!). This box touches basic misconfiguration in Windows based servers and is a good starter to your adventure in penetration testing with hackthebox.
 
-![alt]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/Access/banner.PNG)
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/Access/banner.PNG)
 
 ## Unlock and Access!
 
@@ -44,9 +43,11 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Well, so we have a few ports open, port 21, 23, 80.
 
+## FTP
+
 I always like to check the low-hanging fruit first. So let's get into FTP since `anonymous` login is allowed. This is a common misconfiguration for FTP logins. You never know what you might find but always is useful.
 
-```console
+```bash
 htb@noone:~/Access$ ftp 10.10.10.98
 Connected to 10.10.10.98.
 220 Microsoft FTP Service
@@ -90,7 +91,7 @@ After exploring the FTP shell, I found two files `backup.mdb` and `Access Contro
 
 A little Google-Fu helped me to figure out what a `mdb` file was and how I could use command-line tools in kali to view the contents.
 
-```console
+```bash
 htb@noone:~/Access$ mdb-tables backup.mdb
 acc_antiback acc_door acc_firstopen acc_firstopen_emp acc_holidays acc_interlock acc_levelset acc_levelset_door_group acc_linkageio acc_map acc_mapdoorpos acc_morecardempgroup acc_morecardgroup acc_timeseg acc_wiegandfmt ACGroup acholiday ACTimeZones action_log AlarmLog areaadmin att_attreport att_waitforprocessdata attcalclog attexception AuditedExc
 auth_group_permissions auth_message auth_permission - auth_user auth_user_groups auth_user_user_permissions base_additiondata base_appoption base_basecode base_datatranslation base_operatortemplate base_personaloption base_strresource base_strtranslation base_systemoption CHECKEXACT CHECKINOUT dbbackuplog DEPARTMENTS
@@ -112,7 +113,7 @@ I tried to extract te=he archive on Linux, doesn't work. So, I downloaded it on 
 
 After some trial and error, `access4u@security` was the password for the archive. Found a `.pst` file. Again some Google-Fu and I found a way to read the file on linux.
 
-````console
+````bash
 htb@noone:~/Access$ readpst 'Access Control.pst'
 
 htb@noone:~/Access$cat 'Access Control.mbox'
@@ -150,7 +151,9 @@ John
 
 Great! So we have a set of credentials. That was it from FTP, onto the next service which is Telnet on port 23.
 
-````console
+## telnet
+
+````bash
 htb@noone:~/Access$ telnet -l security 10.10.10.98
 Trying 10.10.10.98...
 Connected to 10.10.10.98.
@@ -194,7 +197,9 @@ Excellent! We have our user flag. Onto root.
 
 In the same telnet session, I tried to check ways to privesc.
 
-```console
+## Privilege Escalation
+
+```bash
 C:\>cmdkey /list
 
 Currently stored credentials:

