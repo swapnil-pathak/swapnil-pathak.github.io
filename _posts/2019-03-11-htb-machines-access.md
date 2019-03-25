@@ -21,7 +21,7 @@ Before following this walkthrough, I highly recommend trying to get the flag you
 
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
-```console
+```bash
 htb@noone:~/Access$ nmap -v -sC -sV -oA nmap/access 10.10.10.98
 Nmap scan report for 10.10.10.98
 Host is up (0.12s latency).
