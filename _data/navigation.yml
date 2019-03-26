@@ -1,11 +1,11 @@
 # main links
 main:
   - title: "Home"
-    url: https://swapnil-pathak.github.io/minimal-mistakes
+    url: https://swapnil-pathak.github.io/
   - title: "Categories"
-    url: https://swapnil-pathak.github.io/minimal-mistakes/categories/
+    url: https://swapnil-pathak.github.io/categories/
   - title: "About"
-    url: https://swapnil-pathak.github.io/minimal-mistakes/about/
+    url: https://swapnil-pathak.github.io/about/
   # - title: "Sample Posts"
   #   url: /year-archive/
   # - title: "Sample Collections"
