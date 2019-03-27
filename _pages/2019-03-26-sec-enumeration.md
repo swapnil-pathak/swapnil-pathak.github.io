@@ -104,15 +104,39 @@ It will use `eth0` as the preferred interface to run a scan.
 
 There are a lot of tutorials available online trying to explain the use of nmap. The truth is a single post cannot encompass the mighty network mapper. However, most of the time you don't even need to use the full extent of `nmap` abilities.
 
--Pn: Treat all hosts as online -- skip host discovery
--sS/sT/sA/sW/sM: TCP SYN/Connect()/ACK/Window/Maimon scans
--sU: UDP Scan
--p : Only scan specified ports
---top-ports : Scan  most common ports
--sV: Probe open ports to determine service/version info
--sC: equivalent to --script=default
--O: Enable OS detection
---max-retries : Caps number of port scan probe retransmissions.
--T<0-5>: Set timing template (higher is faster)
--v: Increase verbosity level (use -vv or more for greater effect)
--A: Enable OS detection, version detection, script scanning, and traceroute
+## Installation
+
+If you are working on a *Kali* box you should have it pre-installed. Otherwise, please refer this [link](https://nmap.org/download.html) for the downloading and installing nmap.
+
+## Man page
+
+General syntax for using nmap:
+> $ nmap <options> <IP>
+
+### Options that matter
+
+> -v: Increase verbosity level (use -vv or more for greater effect)
+
+If you would like to know if nmap is working and not just stuck, this option is for you. It shows everything that's going on and presents a detailed result of the scan.
+
+> -Pn: Treat all hosts as online -- skip host discovery
+
+If a packet filtering firewall or a software exists on the system you are scanning, this option can be used. It assumes that the host is live and just try to scan the ports.
+Usage: `nmap -v -Pn <ip>`
+
+> -sS/sT: TCP SYN/Connect()
+
+
+
+> -sU: UDP Scan
+> -p : Only scan specified ports
+> --top-ports : Scan  most common ports
+> -sV: Probe open ports to determine service/version info
+> -sC: equivalent to --script=default
+> -O: Enable OS detection
+> --max-retries : Caps number of port scan probe retransmissions.
+> -T<0-5>: Set timing template (higher is faster)
+
+
+> -oA <basename>: Output in the three major formats at once
+> -A: Enable OS detection, version detection, script scanning, and traceroute
