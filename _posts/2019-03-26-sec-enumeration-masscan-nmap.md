@@ -21,16 +21,16 @@ Enumeration of any system, host or application is very important before you try 
 > Don't like to read stuff?
 >Here's a summary of takeaways from the tutorial below.
 
-> $ masscan <IP/range> -p0-65535,U:0-65535 -e eth0 -oG output.txt
+> $ masscan <IP/range> -p0-65535,U:0-65535 -e eth0 -oG output.txt |
 > This command will scan an IP or an IP range for all TCP and UDP ports over the eth0 adapter and output a greppable result file to output.txt
 
-> $ nmap -v -p- -sC -sV -oA output.txt <IP>
+> $ nmap -v -p- -sC -sV -oA output.txt <IP> |
 > This command will scan an IP for all TCP ports, print a verbose output, use default nmap scripts for system and version enumeration and output all formats to a file named output.txt
 
 I highly recommend reading through this post to know more about the tools rather than blindly using commands created by other people.
-
+***
 # Masscan
-
+***
 It is generally used for fast scanning of a network. I will try to include everything there is to know about `masscan`, if you need more information, keep reading my posts on [walkthroughs on hackthebox machines](https://swapnil-pathak.github.io/tags/#machines). I use both `masscan` and `nmap` to enumerate the system.
 
 ## Installation
@@ -56,6 +56,7 @@ General syntax for using masscan:
 > $ masscan <ip/range> <options>
 
 ### Options that matter
+***
 
 > -p<port/s>, --ports<ports>
 
@@ -105,7 +106,9 @@ Similar to the port option, this option can be used to spoof the source IP addre
 In order to specify the network interface that you wish to run the scan from. For example, `masscan x.x.x.x -e eth0`
 It will use `eth0` as the preferred interface to run a scan.
 
+***
 # Nmap
+***
 
 There are a lot of tutorials available online trying to explain the use of nmap. The truth is a single post cannot encompass the mighty network mapper. However, most of the time you don't even need to use the full extent of `nmap` abilities.
 
@@ -119,6 +122,7 @@ General syntax for using nmap:
 > $ nmap <options> <IP>
 
 ### Options that matter
+***
 
 > -v: Increase verbosity level (use -vv or more for greater effect)
 
