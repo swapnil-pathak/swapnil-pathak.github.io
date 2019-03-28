@@ -18,9 +18,17 @@ Enumeration of any system, host or application is very important before you try 
 1.  Masscan
 2.  Nmap
 
-> Don't like to read stuff? Here's a summary of takeaways from the tutorial below.
-> $ masscan <IP/range> -p0-65535,U:0-65535 -e eth0 -oG output.txt | This command will scan an IP or an IP range for all TCP and UDP ports over the eth0 adapter and output a greppable result file to output.txt
-> $ nmap -v -p- -sC -sV -oA output.txt <IP> | This command will scan an IP for all TCP ports, print a verbose output, use default nmap scripts for system and version enumeration and output all formats to a file named output.txt
+> Don't like to read stuff?
+
+>Here's a summary of takeaways from the tutorial below.
+
+> $ masscan <IP/range> -p0-65535,U:0-65535 -e eth0 -oG output.txt
+
+> This command will scan an IP or an IP range for all TCP and UDP ports over the eth0 adapter and output a greppable result file to output.txt
+
+> $ nmap -v -p- -sC -sV -oA output.txt <IP>
+
+> This command will scan an IP for all TCP ports, print a verbose output, use default nmap scripts for system and version enumeration and output all formats to a file named output.txt
 
 I highly recommend reading through this post to know more about the tools rather than blindly using commands created by other people.
 
