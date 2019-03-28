@@ -28,9 +28,11 @@ Enumeration of any system, host or application is very important before you try 
 > This command will scan an IP for all TCP ports, print a verbose output, use default nmap scripts for system and version enumeration and output all formats to a file named output.txt
 
 I highly recommend reading through this post to know more about the tools rather than blindly using commands created by other people.
+
 ***
 # Masscan
 ***
+
 It is generally used for fast scanning of a network. I will try to include everything there is to know about `masscan`, if you need more information, keep reading my posts on [walkthroughs on hackthebox machines](https://swapnil-pathak.github.io/tags/#machines). I use both `masscan` and `nmap` to enumerate the system.
 
 ## Installation
