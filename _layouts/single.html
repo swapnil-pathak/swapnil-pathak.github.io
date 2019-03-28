@@ -31,7 +31,9 @@ layout: default
           {% endif %}
         </header>
       {% endunless %}
-
+      <hr>
+    </div>
+    <div class="page__inner-wrap">
 
       <footer class="page__meta">
         {% if site.data.ui-text[site.locale].meta_label %}
@@ -46,7 +48,7 @@ layout: default
         {% endif %}
       </footer>
       <hr>
-      
+
       <section class="page__content" itemprop="text">
         {% if page.toc %}
           <aside class="sidebar__right {% if page.toc_sticky %}sticky{% endif %}">
