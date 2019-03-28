@@ -1,5 +1,5 @@
 ---
-layout: single
+layout: archive
 classes: wide
 author_profile: true
 title: About
