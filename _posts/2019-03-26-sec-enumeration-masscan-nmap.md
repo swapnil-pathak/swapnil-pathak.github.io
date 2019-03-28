@@ -126,17 +126,44 @@ Usage: `nmap -v -Pn <ip>`
 
 > -sS/sT: TCP SYN/Connect()
 
-
+The `-sS` option is used to send SYN packet to all the ports of the IP address. If the server responds with a SYN/ACK packet, it means a port is open. Whereas, in case of the `-sT` option, it attempts to establish a connection to the server after locating an open port and then, resets the connection. (If you want, you can read more about the 3-way handshake for TCP connections [here](https://www.geeksforgeeks.org/computer-network-tcp-3-way-handshake-process/).)
+Usage: `nmap -v -sS <ip>` or `nmap -v -sT <ip>`
 
 > -sU: UDP Scan
+
+Some services run on UDP ports such as, DNS, SNMP or DHCP. The `-sU` option is used to scan a server for open UDP ports. Services running on UDP ports are generally easy to break into hence, this option is very important.
+Usage: `nmap -v -sU <ip>`
+
 > -p : Only scan specified ports
-> --top-ports : Scan  most common ports
+
+This is a very nice option to have if you have a targeted attack in mind. You can specify port numbers or simply use `-p-` to scan all the ports (0-65535).
+Usage: `nmap -v -p- -sT <ip>` or `nmap -v -p 80,443,8080 <ip>`
+
 > -sV: Probe open ports to determine service/version info
+
+In order to determine the version of the service running on a server, after detection of an open port, the `-sV` option can be used.
+Usage: `nmap -v -Pn -sV <ip>`
+
 > -sC: equivalent to --script=default
-> -O: Enable OS detection
-> --max-retries : Caps number of port scan probe retransmissions.
+
+This option is one of the most important one's in the nmap suite. It uses default NSE (Nmap Scripting Engine) scripts to produce valuable information about the open ports on a server and about the server itself. Tests will be performed on the server with this option to identify any potential vulnerabilities that might be present on the system.
+Usage: `nmap -v -Pn -sC <ip>`
+
+> --max-retries <number>: Caps number of port scan probe retransmissions.
+
+When ports are filtered, nmap tries to retransmit packets when they get lost on the network or a poor network reliability exists. The `--max-retries <number>` option, can be used to set the retransmission cap to particular number of packets.
+Usage: `nmap -v -p- --max-retries 0 <ip>`
+
 > -T<0-5>: Set timing template (higher is faster)
 
+This option is used to determine the type of scan that you want to perform on the server. After the `-T` option, you specify a number ranging between 0-5 to set the tempo of the scan. (0 is slowest and 5 is fastest)
+Usage: `nmap -v -p- -T5 <ip>`
 
 > -oA <basename>: Output in the three major formats at once
-> -A: Enable OS detection, version detection, script scanning, and traceroute
+
+In order to output and store scan results in normal, XML, and grepable formats at once, use the `-oA` option. You need to specify the output filename after this option.
+Usage: `nmap -v -p- -sV -oA nmap <ip>`
+
+There are plenty of resources online that you could read to become experts in masscan and nmap but trust me, reading gets you nowhere unless you try it own your own.
+
+Happy Hacking! Cheers!
