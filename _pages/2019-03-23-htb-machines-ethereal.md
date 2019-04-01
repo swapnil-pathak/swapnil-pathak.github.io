@@ -11,6 +11,7 @@ tags:
     - windows
 ---
 
+This machine was absolutely insane, mind boggling and fun at the same time. It took me a lot of painful days to own this machine but eventually, hard work wins. It was definitely not easy to enumerate mainly due to the slow speed and also the way things had to be located. Nonetheless, an awesome machine for learning.
 
 ![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/ethereal/banner.png)
 
