@@ -2,7 +2,7 @@
 layout: single
 classes: wide
 title:  "Walkthrough - Ethereal"
-date: 2019-03-23
+date: 2019-03-10
 categories:
     - "hackthebox"
 tags:

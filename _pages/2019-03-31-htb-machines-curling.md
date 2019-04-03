@@ -2,7 +2,7 @@
 layout: single
 classes: wide
 title:  "Walkthrough - Curling"
-date: 2019-03-30
+date: 2019-03-31
 categories:
     - "hackthebox"
 tags:
