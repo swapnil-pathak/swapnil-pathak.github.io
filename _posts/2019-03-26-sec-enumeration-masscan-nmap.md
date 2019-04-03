@@ -5,6 +5,7 @@ title:  "Security Essentials - Enumeration"
 date: 2019-03-26
 categories:
     - "security essentials"
+    - tutorial
 tags:
     - enumeration
     - boot2root

@@ -5,6 +5,7 @@ title:  "Walkthrough - Ethereal"
 date: 2019-03-10
 categories:
     - "hackthebox"
+    - walkthrough
 tags:
     - machines
     - insane

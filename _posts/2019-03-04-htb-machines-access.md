@@ -5,6 +5,7 @@ title:  "Walkthrough - Access"
 date: 2019-03-04
 categories:
     - "hackthebox"
+    - walkthrough
 tags:
     - machines
     - windows

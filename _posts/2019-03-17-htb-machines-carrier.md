@@ -5,13 +5,14 @@ title:  "Walkthrough - Carrier"
 date: 2019-03-17
 categories:
     - "hackthebox"
+    - walkthrough
 tags:
     - machines
     - medium
     - linux
 ---
 
-This machine was fun to do.
+A tricky machine. It needed a lot of network configuration learning, some RCE and patience. One of the best machines I have done yet due to its medium level complexity and the output I gained from all the reading I did for this box.
 
 ![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/carrier/banner.JPG)
 
@@ -328,7 +329,7 @@ Received: QUIT
 Let's try to login using SSH using the obtained credentials.
 
 ```bash
-root@kali# ssh root@10.10.10.105
+root@kali:~/Carrier# ssh root@10.10.10.105
 root@10.10.10.105's password: BGPtelc0rout1ng
 Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-24-generic x86_64)
 

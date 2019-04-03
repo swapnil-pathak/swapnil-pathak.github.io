@@ -4,6 +4,7 @@ title:  "Walkthrough - HTB Invite code"
 date: 2019-02-01
 categories:
     - "hackthebox"
+    - walkthrough
 ---
 Getting the invite code to login and start hacking!
 

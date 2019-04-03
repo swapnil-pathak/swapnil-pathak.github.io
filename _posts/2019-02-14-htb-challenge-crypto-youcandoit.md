@@ -5,6 +5,7 @@ title:  "Walkthrough - You can do it!"
 date: 2019-02-14
 categories:
     - "hackthebox"
+    - walkthrough
 tags:
     - challenges
     - crypto

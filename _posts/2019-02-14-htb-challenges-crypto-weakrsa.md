@@ -5,6 +5,7 @@ title:  "Walkthrough - Weak RSA"
 date: 2019-02-14
 categories:
     - "hackthebox"
+    - walkthrough
 tags:
     - challenges
     - crypto
