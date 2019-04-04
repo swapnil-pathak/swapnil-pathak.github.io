@@ -5,6 +5,7 @@ title:  "Walkthrough - Frolic"
 date: 2019-03-24
 categories:
     - "hackthebox"
+    - walkthrough
 tags:
     - machines
     - easy

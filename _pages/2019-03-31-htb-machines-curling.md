@@ -5,13 +5,14 @@ title:  "Walkthrough - Curling"
 date: 2019-03-31
 categories:
     - "hackthebox"
+    - walkthrough
 tags:
     - machines
     - easy
     - linux
 ---
 
-![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/Curling/banner.JPG)
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/banner.JPG)
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
 
