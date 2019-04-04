@@ -77,3 +77,5 @@ Read data files from: /usr/bin/../share/nmap
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 # Nmap done at Thu Feb 14 12:11:21 2019 -- 1 IP address (1 host up) scanned in 1353.08 seconds
 ```
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/banner.JPG)
