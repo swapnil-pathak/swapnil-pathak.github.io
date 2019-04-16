@@ -19,4 +19,4 @@ I have served as a Research Assistant under [Prof. Long Lu](https://www.longlu.o
 
 This blog will contain posts on HackTheBox walkthroughs, Security essentials and my learning experiences and projects. Hopefully, you'll enjoy it and learn something new. For posts on certain topics, feel free to reach out to me. Do keep an eye on the [Recent posts](https://swapnil-pathak.github.io/).
 
-Click here to view my [CV]()
+Click here to view my [CV]({{ site.url }}{{ site.baseurl }}/assets/docs/cv.pdf)
