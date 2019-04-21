@@ -188,7 +188,7 @@ drwxr-xr-x 6 floris floris  4096 Apr  7 21:13 ..
 -rw-rw---- 1 root   floris 14236 Apr  7 21:27 report
 floris@curling:~/admin-area$ cat input
 url = "http://127.0.0.1"
-floris@curling:~/admin-area$
+floris@curling:~/admin-area$ cat report
 <!DOCTYPE html>
 <html lang="en-gb" dir="ltr">
 <head>
