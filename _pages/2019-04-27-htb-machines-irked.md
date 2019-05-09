@@ -54,7 +54,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Sun Feb 10 20:44:03 2019 -- 1 IP address (1 host up) scanned in 1072.35 seconds
 ```
 
-We have a few ports open. A few weird ports with IRC service running on them. But let's start with the most common way, port 80.
+We have a few ports open. A few weird ports with IRC service running on them. But lets start with the most common way, port 80.
 
 ![port80]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/irked/port-80.JPG)
 
@@ -134,5 +134,46 @@ id
 uid=1001(ircd) gid=1001(ircd) groups=1001(ircd)
 pwd
 /home/ircd/Unreal3.2
+```
 
+I will upgrade to a full TTY. To know how I did that, follow [this](https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/).
+
+```bash
+ircd@irked:~$ cd /home
+ircd@irked:/home$ ls -la
+total 16
+drwxr-xr-x  4 root     root     4096 May 14  2018 .
+drwxr-xr-x 21 root     root     4096 May 15  2018 ..
+drwxr-xr-x 18 djmardov djmardov 4096 Apr 30 08:28 djmardov
+drwxr-xr-x  3 ircd     root     4096 May 15  2018 ircd
+ircd@irked:/home$ find / -perm -u=s -type f 2>/dev/null
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/policykit-1/polkit-agent-helper-1
+/usr/lib/openssh/ssh-keysign
+/usr/lib/spice-gtk/spice-client-glib-usb-acl-helper
+/usr/sbin/exim4
+/usr/sbin/pppd
+/usr/bin/chsh
+/usr/bin/procmail
+/usr/bin/gpasswd
+/usr/bin/newgrp
+/usr/bin/at
+/usr/bin/pkexec
+/usr/bin/X
+/usr/bin/passwd
+/usr/bin/chfn
+/usr/bin/viewuser
+/sbin/mount.nfs
+/bin/su
+/bin/mount
+/bin/fusermount
+/bin/ntfs-3g
+/bin/umount
+ircd@irked:/home$ viewuser 
+This application is being devleoped to set and test user permissions
+It is still being actively developed
+(unknown) :0           2019-04-03 06:34 (:0)
+djmardov pts/2        2019-04-04 09:01 (10.10.14.14)
+sh: 1: /tmp/listusers: not found
 ```
