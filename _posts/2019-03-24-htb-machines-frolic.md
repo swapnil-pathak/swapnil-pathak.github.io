@@ -18,6 +18,8 @@ This was a good practice of decoding stuff, web exploitation and rop exploitatio
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
 
+## Enumeration
+
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
 ```bash
@@ -227,6 +229,8 @@ A login form. Let's try the two usernames and passwords we have until now. The t
 
 ![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/frolic/psmslogin.png)
 
+## Getting a shell
+
 I did a searchsploit on `playsms` and got this.
 
 ```bash
@@ -274,6 +278,8 @@ www-data@frolic:/home/ayush$ cat user.txt
 ```
 
 Looking around, we have the `user.txt` file. On to root!
+
+## Return oriented programming
 
 ```bash
 www-data@frolic:/home/ayush/.binary$ ls -l

