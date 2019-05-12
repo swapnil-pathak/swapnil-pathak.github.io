@@ -12,6 +12,8 @@ tags:
     - linux
 ---
 
+This was a decent box. An IRC exploit gets you a shell with the IRC user but not the local user. There are two methods to get a privilege escalation. One is a bit CTFy which I have not included in this walkthrough and the other is using a setuid binary that gets us a root shell. Overall this was a good box.
+
 ![banner]({{ site.url }}{{ site.baseurl }}/assets/images/HTB_images/machines/irked/banner.JPG)
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
@@ -170,7 +172,7 @@ ircd@irked:/home$ find / -perm -u=s -type f 2>/dev/null
 /bin/fusermount
 /bin/ntfs-3g
 /bin/umount
-ircd@irked:/home$ viewuser 
+ircd@irked:/home$ viewuser
 This application is being devleoped to set and test user permissions
 It is still being actively developed
 (unknown) :0           2019-04-03 06:34 (:0)
